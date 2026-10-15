@@ -75,6 +75,15 @@
     ['What if my phone rings?', 'Someone will ask you to put it face down. The show does not stop for anyone, and the balcony will let you know what it thinks.'],
     ['What about the last show?', 'Doors at 6:40, projector at 7:00, house out by ten. The shutter comes down on the hour and the marquee light goes with it.']
   ];
+  /* the site's pages — one place to edit the cross-page navigation */
+  var PAGES = [
+    ['index.html', 'The show', 'Holocaust, on our screen'],
+    ['about.html', 'The complex', 'What Arush Cineplex is'],
+    ['hall.html', 'The room', 'The lamp, the cloth, the seats'],
+    ['shows.html', 'The week', 'Show times and the counter'],
+    ['visit.html', 'Coming', 'Getting here and the house rules']
+  ];
+
   var weekDays = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
   var weekShows = [
     { time: '10:00 AM', note: 'FIRST SHOW', full: [] },
@@ -331,7 +340,13 @@
   /* =======================================================================
      render the data-driven sections
      ======================================================================= */
-  var mosaic = document.getElementById('mosaic');
+  /* Pages share one script, so a section that a page does not have must not
+     break it: host() hands back a detached node instead of null. */
+  function host(id) { return document.getElementById(id) || document.createElement('div'); }
+  var self_page = (window.location.pathname.split('/').pop() || 'index.html');
+  if (self_page === '' || self_page === 'index.html') self_page = window.location.pathname === '/' ? 'index.html' : self_page;
+
+  var mosaic = host('mosaic');
   orbitImages.forEach(function (image, i) {
     var angle = i / orbitImages.length * Math.PI * 2 - Math.PI / 2;
     var x = 50 + Math.cos(angle) * 43;
@@ -348,7 +363,7 @@
     mosaic.appendChild(tile);
   });
 
-  var constellation = document.getElementById('constellation');
+  var constellation = host('constellation');
   constellationImages.forEach(function (image, i) {
     var tile = document.createElement('div');
     tile.className = 'world-tile world-tile-' + i;
@@ -357,7 +372,7 @@
     constellation.appendChild(tile);
   });
 
-  var chapters = document.getElementById('filmChapters');
+  var chapters = host('filmChapters');
   films.forEach(function (film, i) {
     var article = document.createElement('article');
     article.className = 'film-chapter';
@@ -377,8 +392,17 @@
     chapters.appendChild(article);
   });
 
-  var menuNav = document.getElementById('menuNav');
-  [['home', 'The show'], ['about', 'About this page'], ['story', 'His world'], ['world', 'The fragments'], ['films', 'Show times'], ['hall', 'The hall'], ['schedule', 'The week'], ['visit', 'Getting here']].forEach(function (item, i) {
+  var menuNav = host('menuNav');
+  var here = [];
+  main.querySelectorAll('[data-sheet]').forEach(function (sec) {
+    here.push([sec.id, sec.dataset.sheet]);
+  });
+  /* fall back to the index list if a page forgot to mark its sections */
+  if (!here.length && document.getElementById('home')) {
+    here = [['home', 'The show'], ['about', 'About this page'], ['story', 'His world'], ['world', 'The fragments'],
+      ['films', 'Show times'], ['hall', 'The hall'], ['schedule', 'The week'], ['visit', 'Getting here']];
+  }
+  here.forEach(function (item, i) {
     var b = document.createElement('button');
     b.type = 'button';
     b.dataset.nav = item[0];
@@ -386,9 +410,24 @@
     menuNav.appendChild(b);
   });
 
+  var others = PAGES.filter(function (p) { return p[0] !== self_page; });
+  if (others.length) {
+    var divider = document.createElement('div');
+    divider.className = 'menu-divider';
+    divider.textContent = 'THE OTHER PAGES';
+    menuNav.appendChild(divider);
+    others.forEach(function (p, i) {
+      var a = document.createElement('a');
+      a.href = p[0];
+      a.title = p[2];
+      a.innerHTML = '<span>0' + (i + 1) + '</span>' + p[1];
+      menuNav.appendChild(a);
+    });
+  }
 
-  function rows(list, host, cls) {
-    var el = document.getElementById(host);
+
+  function rows(list, id, cls) {
+    var el = host(id);
     list.forEach(function (row) {
       var li = document.createElement('li');
       if (cls) li.className = cls;
@@ -397,7 +436,7 @@
     });
   }
 
-  var tilesHost = document.getElementById('hallTiles');
+  var tilesHost = host('hallTiles');
   hallTiles.forEach(function (tile) {
     var fig = document.createElement('figure');
     var box = document.createElement('span');
@@ -413,7 +452,7 @@
   rows(priceFacts, 'priceFacts');
   rows(visitFacts, 'visitFacts');
 
-  var grid = document.getElementById('scheduleGrid');
+  var grid = host('scheduleGrid');
   var todayIdx = (new Date().getDay() + 6) % 7;   // 0 = Monday
   weekDays.forEach(function (day, di) {
     var col = document.createElement('div');
@@ -432,7 +471,7 @@
     grid.appendChild(col);
   });
 
-  var faq = document.getElementById('faq');
+  var faq = host('faq');
   houseFaq.forEach(function (item, i) {
     var details = document.createElement('details');
     details.innerHTML = '<summary>' + item[0] + '<span class="num">0' + (i + 1) + '</span></summary><p>' + item[1] + '</p>';
@@ -571,6 +610,10 @@
   var context = gsap.context(function () {
     if (reduced) return;
 
+    /* The journey timeline belongs to the index page only; the secondary pages
+       keep the reveal vocabulary but not the scroll sequence. */
+    if (document.getElementById('home')) {
+
     var introTl = gsap.timeline();
     introTl.fromTo('.intro-mark', { y: 28, opacity: 0, clipPath: 'inset(100% 0 0 0)' }, { y: 0, opacity: 1, clipPath: 'inset(0% 0 0 0)', duration: 0.9, ease: 'power3.out' }, 0.1)
       .to('.intro-line', { scaleX: 1, duration: 1.2, ease: 'power2.inOut' }, 0.35)
@@ -639,8 +682,10 @@
       header.style.color = dark ? '#11100f' : '#eeeae4';
       header.dataset.tone = dark ? 'dark' : 'light';
     }
-    ScrollTrigger.create({ trigger: main, start: 'top top', end: 'bottom bottom', onUpdate: updateHeader, onRefresh: updateHeader });
-    updateHeader();
+    if (journey && about && wide && ending && closing) {   // secondary pages have no journey to read
+      ScrollTrigger.create({ trigger: main, start: 'top top', end: 'bottom bottom', onUpdate: updateHeader, onRefresh: updateHeader });
+      updateHeader();
+    }
 
     gsap.fromTo('.wide-media', { clipPath: 'inset(35% 0 0 0)', scale: 0.94 }, { clipPath: 'inset(0% 0 0 0)', scale: 1, ease: 'none', scrollTrigger: { trigger: '.wide-scene', start: 'top bottom', end: 'top top', scrub: 0.5 } });
     gsap.fromTo('.wide-copy', { y: 60, opacity: 0 }, { y: 0, opacity: 1, scrollTrigger: { trigger: '.wide-scene', start: 'top 45%', end: 'top top', scrub: 0.5 } });
@@ -662,6 +707,8 @@
 
     gsap.fromTo('.end-car-card', { clipPath: 'inset(18% 8% 18% 8%)', y: 75 }, { clipPath: 'inset(0% 0% 0% 0%)', y: 0, ease: 'none', scrollTrigger: { trigger: '.end-car-card', start: 'top 95%', end: 'top 35%', scrub: 0.6 } });
     gsap.fromTo('.end-mark', { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: '.end-card', start: 'top 65%' } });
+    }   // end of the index page's journey timeline
+
     gsap.to('.progress-line', { scaleX: 1, ease: 'none', scrollTrigger: { trigger: main, start: 'top top', end: 'bottom bottom', scrub: true } });
 
     /* ---- hall additions: same reveal vocabulary (fromTo + scrub, power2) ---- */
@@ -706,7 +753,7 @@
       gsap.fromTo(clip, { y: 0 }, { y: 70, ease: 'none', scrollTrigger: { trigger: clip, start: 'top bottom', end: 'bottom top', scrub: true } });
     });
     gsap.fromTo('.closing .end-mark', { y: 70, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: '.closing', start: 'top 68%' } });
-    gsap.fromTo('.closing-nav button', { y: 26, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, stagger: 0.05, ease: 'power2.out', scrollTrigger: { trigger: '.closing-nav', start: 'top 86%' } });
+    gsap.fromTo('.closing-nav button, .closing-nav a', { y: 26, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, stagger: 0.05, ease: 'power2.out', scrollTrigger: { trigger: '.closing-nav', start: 'top 86%' } });
   }, main);
 
   window.addEventListener('load', function () { ScrollTrigger.refresh(); media.forEach(function (m) { m.sizeVideo(); }); });
@@ -716,7 +763,7 @@
      (source: components/showcase-controller.tsx)
      ======================================================================= */
   var DURATION = 55;
-  if (new URLSearchParams(window.location.search).get('showcase') === '1') {
+  if (new URLSearchParams(window.location.search).get('showcase') === '1' && document.getElementById('home')) {
     state.showcase = true;
     document.documentElement.classList.add('showcase-mode');
     var link = document.querySelector('.playback-control > a');

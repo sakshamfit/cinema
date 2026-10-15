@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The week and the counter — Arush Cineplex, Madhuban</title>
+<meta name="description" content="This week at Arush Cineplex, Madhuban: three shows a day at 10:00 AM, 2:30 PM and 7:00 PM, house-full marks, ₹60 and ₹100 tickets at the counter, and the small print.">
+<meta property="og:title" content="The week and the counter — Arush Cineplex, Madhuban">
+<meta property="og:description" content="This week at Arush Cineplex, Madhuban: three shows a day at 10:00 AM, 2:30 PM and 7:00 PM, house-full marks, ₹60 and ₹100 tickets at the counter, and the small print.">
+<meta property="og:type" content="website">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<main id="root">
+  <a class="skip-link" href="#lead">Skip to the page</a>
+
+  <header class="site-header" id="siteHeader">
+    <a class="header-film" href="index.html">ARUSH CINEPLEX · MADHUBAN, BIHAR</a>
+    <a class="header-logo" href="index.html" aria-label="Back to the show"><span class="wordmark" role="img" aria-label="Arush Cineplex"><span class="wordmark-cut"></span>AC</span></a>
+    <div class="header-right">
+      <nav class="site-nav" aria-label="Pages">
+        <a href="index.html">THE SHOW</a>
+        <a href="about.html">THE COMPLEX</a>
+        <a href="hall.html">THE ROOM</a>
+        <a href="shows.html" aria-current="page">THE WEEK</a>
+        <a href="visit.html">COMING</a>
+      </nav>
+      <button class="menu-toggle" type="button" id="menuToggle" aria-label="Open page navigation">SHOWS <span><i></i><i></i></span></button>
+    </div>
+  </header>
+
+  <!-- ============ page hero ============ -->
+  <section class="hall-lead page-lead" id="lead" aria-label="The week" data-sheet="The week">
+    <p class="eyebrow">THE PROGRAMME · THIS WEEK</p>
+    <h1 class="hall-title">Three shows a day.<br><em>Cash at the counter.</em></h1>
+    <p class="hall-note">One film, twenty-one shows, and no choices to make beyond the deck you sit on. The board below is the week as it stands; the counter can and does overrule it.</p>
+    <div class="page-links">
+      <a href="index.html">THE FILM, IN PICTURES</a>
+      <a href="visit.html">HOUSE RULES AND DIRECTIONS</a>
+    </div>
+  </section>
+  <section class="hall-lead" id="week" aria-label="The week board" data-sheet="The week">
+    <div class="film-section-label"><span>01 · THE WEEK</span><span>TWENTY-ONE SHOWS · FOUR HOUSE FULLS</span></div>
+    <h2 class="hall-title">The week, on one board.</h2>
+    <p class="hall-note">Every show is the same film. The evening show on Friday, Saturday and Sunday is the one that fills — if the board says <b>HOUSE FULL</b>, the counter will still sell the next slot, and it will tell you honestly which one.</p>
+    <div class="schedule" id="scheduleGrid"></div>
+    <div class="legend"><span><i class="dot-open"></i> TICKETS AT THE COUNTER</span><span><i class="dot-full"></i> HOUSE FULL — WAITLIST AT THE COUNTER</span><span>DOORS OPEN 20 MINUTES BEFORE EACH SHOW</span></div>
+  </section>
+
+  <section class="hall-lead" id="counter" aria-label="Tickets and prices" data-sheet="The counter">
+    <div class="film-section-label"><span>02 · THE COUNTER</span><span>OPENS 9:00 AM · CLOSES 10 MINUTES AFTER THE LAST SHOW</span></div>
+    <h2 class="hall-title">Two prices, one queue,<br><em>no app.</em></h2>
+    <ul class="hall-facts prices" id="priceFacts"></ul>
+    <div class="counter-grid">
+      <p class="hall-note">Half the tickets are sold before the first show — the morning house is the cheap one and the quarter-day crowd knows it. If you want the middle of the stall on the evening show, come an hour early, not ten minutes.</p>
+      <div class="counter-notes">
+        <div class="chapter-topline"><span>—</span><span>THE SMALL PRINT</span></div>
+        <ul>
+          <li>Tickets are sold for the show, not the seat. No reservation, no holding.</li>
+          <li>No refunds once the feature has started. Exchange only at the manager&#8217;s desk, same day.</li>
+          <li>Group booking of ten or more: come to the counter the day before, not on the day.</li>
+          <li>Aadhaar is not required. A student card gets the half rate.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="hall-blocks">
+      <div class="hall-block">
+        <div class="chapter-topline"><span>01</span><span>HOW IT FILLS</span></div>
+        <h3>The 7:00 PM is the show everybody wants.</h3>
+        <p>Monday to Wednesday you can walk up at 6:50. Friday to Sunday the queue starts at the bus stand and the balcony is the honest answer by 6:30.</p>
+      </div>
+      <div class="hall-block">
+        <div class="chapter-topline"><span>02</span><span>THE INTERVAL</span></div>
+        <h3>Twelve minutes, one break, mid-show.</h3>
+        <p>The house lights come up for exactly that long. The counter stays open through it, and so does the aisle — the only time anyone is allowed to walk in front of the cloth.</p>
+      </div>
+      <div class="hall-block">
+        <div class="chapter-topline"><span>03</span><span>SCHOOL AND GROUPS</span></div>
+        <h3>Ten or more, the day before.</h3>
+        <p>A teacher with a list gets the group rate and the morning house, which is cheaper for you and easier for us. There is no booking form; the counter writes it down.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="closing" id="thanks">
+    <p class="eyebrow">ARUSH CINEPLEX · MADHUBAN, BIHAR</p>
+    <div class="end-mark"><span>ONE SCREEN</span><span class="wordmark" role="img" aria-label="Arush Cineplex"><span class="wordmark-cut"></span>AC</span></div>
+    <h2 class="hall-title closing-title">Arush Cineplex,<br><em>in brief.</em></h2>
+    <p class="hall-note closing-note">One auditorium on Station Road in Madhuban, Bihar. 620 seats across two decks, one 4K laser projector, one film at a time — three shows a day, a twelve minute interval, and a counter that takes cash from 9:00 AM. It is not a chain and it does not pretend to be: the person who checks the sound before the first show is often the person who sells your ticket.</p>
+    <div class="closing-split">
+      <div class="closing-col">
+        <div class="chapter-topline"><span>—</span><span>ON THIS PAGE</span></div>
+        <nav class="closing-nav" aria-label="This page">
+          <button type="button" data-nav="week">The week</button>
+          <button type="button" data-nav="counter">The counter</button>
+        </nav>
+      </div>
+      <div class="closing-col">
+        <div class="chapter-topline"><span>—</span><span>THE OTHER PAGES</span></div>
+        <nav class="closing-nav" aria-label="Other pages">
+          <a href="index.html">The show</a>
+          <a href="about.html">The complex</a>
+          <a href="hall.html">The room</a>
+          <a href="visit.html">Coming</a>
+        </nav>
+      </div>
+    </div>
+    <div class="legal closing-legal">
+      <span>ARUSH CINEPLEX · STATION ROAD, MADHUBAN, BIHAR 848202</span>
+      <span>SHOW TIMES, PRICES AND SEATS HERE ARE PROVISIONAL — THE COUNTER DECIDES.</span>
+      <a href="index.html">BACK TO THE SHOW</a>
+    </div>
+  </footer>
+
+  <div class="playback-control" id="playbackControl">
+    <button type="button" id="pauseFilms" aria-label="Pause background films">PAUSE FILMS<span aria-hidden="true">&#8557;</span></button>
+  </div>
+  <div class="progress-line" id="progressLine" aria-hidden="true"></div>
+
+  <div id="menuRoot" hidden>
+    <div class="sheet-overlay" data-slot="sheet-overlay" data-state="closed"></div>
+    <div class="chapter-menu" data-slot="sheet-content" data-state="closed" role="dialog" aria-modal="true" aria-labelledby="menuHeading">
+      <h2 class="menu-heading" data-slot="sheet-title" id="menuHeading">THE ARUSH INDEX</h2>
+      <p class="menu-description" data-slot="sheet-description">This page first, then the rest of the site.</p>
+      <nav id="menuNav"></nav>
+      <span class="wordmark" role="img" aria-label="Arush Cineplex"><span class="wordmark-cut"></span>AC</span>
+      <p>HOLOCAUST · NOW SHOWING<br>DAILY 10:00 AM · 2:30 PM · 7:00 PM<br>ARUSH CINEPLEX, STATION ROAD, MADHUBAN — COUNTER OPENS 9:00 AM</p>
+      <button type="button" data-slot="sheet-close" aria-label="Close">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+        <span class="sr-only">Close</span>
+      </button>
+    </div>
+  </div>
+
+  <div id="dialogRoot" hidden>
+    <div class="dialog-overlay" data-slot="dialog-overlay" data-state="closed"></div>
+    <div class="film-dialog" data-slot="dialog-content" data-state="closed" role="dialog" aria-modal="true" aria-labelledby="filmTitle">
+      <h2 data-slot="dialog-title" id="filmTitle">Holocaust</h2>
+      <p data-slot="dialog-description">Official promotional film. Sound and playback controls are available in the player.</p>
+      <div id="filmHost"></div>
+      <a class="player-fallback" id="filmFallback" target="_blank" rel="noreferrer" href="https://www.youtube.com/watch?v=_8J8LwoVH_0">Open official film on YouTube</a>
+      <button type="button" data-slot="dialog-close" aria-label="Close">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+        <span class="sr-only">Close</span>
+      </button>
+    </div>
+  </div>
+</main>
+
+<div id="showcaseRoot"></div>
+
+<script src="assets/gsap.min.js"></script>
+<script src="assets/ScrollTrigger.min.js"></script>
+<script src="assets/site.js"></script>
+</body>
+</html>

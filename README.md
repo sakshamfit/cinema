@@ -5,10 +5,14 @@ that site's layout, stylesheet, scroll choreography, media behaviour and copy �
 the house's own **AC**, the film on the screen is **Holocaust**, and after the show half the page turns into the hall
 itself (what the building is, the week's board, the counter, house rules, how to get here).
 
-No framework, no build step, no installs.
+No framework, no build step, no installs — five static pages sharing one stylesheet and one script.
 
 ```
-index.html                   the page — 12 sections, film half then hall half
+index.html                   the show — 12 sections, film half then hall half
+about.html                   the complex in brief: what it is, what it has, what it is not
+hall.html                    the room: the stage, the two loops, the booth, the seats
+shows.html                   the week: the board, the counter, how the house fills
+visit.html                   coming: the walk, the door, the house rules
 assets/site.css              the source site's app/globals.css, verbatim, + a shim + the hall additions
 assets/site.js               app/page.tsx + cinema-media.tsx + showcase-controller.tsx + lib/* ported to plain DOM
 assets/gsap.min.js           GSAP 3.15.0 — the source's pinned version, vendored from npm
@@ -25,7 +29,23 @@ python3 -m http.server 8000 --bind 0.0.0.0     # or any static host
 
 Serve it rather than opening `file://` — the embedded players need an `origin` and `?showcase=1` is a query param.
 
-## The page
+## The pages
+
+| File | What it carries |
+| --- | --- |
+| `index.html` | the whole thing — the scroll sequence, the film, then the hall in summary |
+| `about.html` | the complex in brief: what Arush Cineplex is, what it has, what it does not offer |
+| `hall.html` | the room — the two loops, the five frames, the eight specs, the booth |
+| `shows.html` | the week board, the counter, the small print, how the house fills |
+| `visit.html` | the walk from the station, what happens at the door, the 8 house rules |
+| `sphere.html` | the earlier build, kept as an archive page (own inline script, not this CSS/JS) |
+
+Every page carries the same chrome: the fixed header with the page nav (`.site-nav`, five links, `aria-current` on
+the live one, folded away below 900px), the red index sheet (this page's chapters, then **THE OTHER PAGES**), the
+film dialog, `PAUSE FILMS`, the progress line and the closing footer. There is no templating step, so that chrome
+is duplicated per page deliberately and the harness below checks that no page has drifted.
+
+## The index page, section by section
 
 | # | Section | What it is |
 | --- | --- | --- |
@@ -46,6 +66,17 @@ Everything new uses the source's own vocabulary — `--red / --paper / --ink`, t
 labels with a `1px solid #48423f` rule above them, `clamp()` display type at negative tracking, `#c1bab3` body copy,
 `aspect-ratio:1.7` media tiles with a slight rotation, and `fromTo` + `scrub` reveals at the same durations and
 easings. The `PAUSE FILMS` control pauses the new clip too, since it is a `.cinema-media` panel like the others.
+
+## Footer type
+
+The footer was the source's own 9px `letter-spacing:.07em` micro-row — unreadable at that size on `--ink`. It now
+speaks the same voice as the sections above it: `.legal` and `.credits` are **12px** with `.06em`/`.10em` tracking
+and `line-height:1.75`, the closing note is **15px** in the site's body grey (`#c1bab3`, the colour `.hall-note`
+uses), and the footer's navigation rows are **13px** in that same face with a `→` at the end of each row. The
+closing block also gained a real heading (`Arush Cineplex, in brief.` in `.hall-title`) so it reads as a section of
+the site and not as fine print, and its two columns split this page's anchors from the other pages. Mobile keeps a
+smaller step (11px legal, 12px rows); nothing on the page is below 10.5px. All of it is appended in the
+`PAGE ADDITIONS` block at the end of `assets/site.css` — nothing earlier in that file was edited.
 
 ## Branding decisions taken
 
@@ -85,8 +116,11 @@ Add a `tel:` link to the counter when there is one — deliberately absent for n
    is new, appended, never edited in place.
 2. **Cloned timeline** — of the source animation block's **259 numeric values, none are missing or changed** in the
    port; the only extra values are three `75`s from the two header-tone lines extended for the new dark sections
-   (so the header stays legible over `#about` and after the end card). All 39 classes the animation targets resolve,
-   and every ScrollTrigger `start`/`end`/`scrub` pair matches.
+   (so the header stays legible over `#about` and after the end card). The one structural change is that the whole
+   journey sequence now sits inside `if (document.getElementById('home')) { … }`, so the secondary pages can load the
+   same script without the scroll sequence — and `host()` returns a detached node when a page has no `#scheduleGrid`
+   or `#hallTiles`, which is what keeps one script shared by five pages. All 39 classes the animation targets
+   resolve, and every ScrollTrigger `start`/`end`/`scrub` pair matches.
 3. **Runtime** — a jsdom harness (fake YouTube API, IO/RO stubs) loads the built page with no script errors:
    10 mosaic tiles, 5 constellation tiles, 3 chapters, 7 media panels all reaching `data-playing`, the hall's
    local-only clip correctly reporting `data-media-state="local"` with no iframe mounted, 5 tiles + 8 + 5 + 6 fact
@@ -94,8 +128,13 @@ Add a `tel:` link to the counter when there is one — deliberately absent for n
    sheet opens and closes on nav select with the scroll lock released, dialog opens on the right embed URL and
    pauses background clips, Escape closes both, skip-link target exists.
 4. **Reduced motion** — same harness with `prefers-reduced-motion` on: nothing is left at `opacity:0`, the intro is
-   dropped immediately, all 7 panels still render their posters, no errors.
-5. **Copy** — a scan for `OG`, the film's title, the star/director/composer names and the old venue name across
+   dropped immediately, all 8 panels still render their posters, no errors.
+5. **Every page** — the five pages are loaded one at a time in the same harness: zero script errors, the index sheet
+   builds this page's chapters from its `data-sheet` sections plus four page links, the JS-filled hosts land (19
+   fact rows / 5 tiles / 7×3 schedule / 8 rules on the index, and only the right subset on each page), local-only
+   panels reach `data-media-state="local"` with a `<video>` and no iframe, nothing is left stuck hidden, and every
+   relative `href` in every page resolves to a file that exists.
+6. **Copy** — a scan for `OG`, the film's title, the star/director/composer names and the old venue name across
    `index.html`, `sphere.html`, `assets/*` and `favicon.svg` returns nothing but asset filenames.
 
 ## Editing
@@ -108,6 +147,8 @@ Add a `tel:` link to the counter when there is one — deliberately absent for n
 | New fact row or schedule cell | the arrays at the top of `assets/site.js` — they render into the existing markup |
 | Another local-only panel | `<div class="cinema-media hall-clip" data-image="…" data-clip="glasses">` — no `data-id` means no YouTube mount |
 | Motion | the timeline in `assets/site.js`. The film half is 1:1 with the source — diff against `app/page.tsx` before changing it |
+| Footer / nav type | the `PAGE ADDITIONS` block at the end of `assets/site.css` (`.legal`, `.credits`, `.closing-*`, `.site-nav`) |
+| Add a page | copy the chrome from `hall.html`, put `data-sheet="Label"` on each `<section>` that should appear in the index sheet, then add the file to `PAGES` (top of `assets/site.js`) and to the `.site-nav` + `THE OTHER PAGES` lists in all six pages |
 
 ## Rights
 

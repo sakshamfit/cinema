@@ -395,5 +395,62 @@ body[data-overlay="open"]{overflow:hidden}
 @media(min-width:1700px) { .hall-title { font-size:96px; } .hall-blocks { gap:74px; } }
 @media(prefers-reduced-motion:reduce) {
   .hall-tiles img,.faq summary { transition:none; }
-  .schedule>div,.hall-block,.hall-tiles figure,.faq details,.closing-nav button { opacity:1!important; transform:none!important; }
+  .schedule>div,.hall-block,.hall-tiles figure,.faq details,.closing-nav button,.closing-nav a { opacity:1!important; transform:none!important; }
 }
+
+/* ==========================================================================
+   PAGE ADDITIONS — multi-page chrome + footer legibility
+   Appended, like the hall block above it: nothing earlier in this file is
+   edited. Everything here reuses the source site's own scale and tokens.
+   ========================================================================== */
+.header-right { justify-self:end; display:flex; align-items:center; gap:clamp(20px,2.6vw,46px); }
+.site-nav { display:flex; align-items:center; gap:clamp(15px,1.8vw,30px); }
+.site-nav a { font-size:11px; letter-spacing:.11em; text-decoration:none; color:inherit; opacity:.6; padding:15px 0; border-bottom:1px solid transparent; transition:opacity .3s,border-color .3s; }
+.site-nav a:hover { opacity:1; border-bottom-color:var(--red); }
+.site-nav a[aria-current="page"] { opacity:1; border-bottom-color:currentColor; }
+/* the header flips its own colour as the page scrolls, so the nav must ride that colour */
+
+/* page hero on the secondary pages (same type scale as the hall sections) */
+.page-lead { padding-top:clamp(120px,15vw,190px); }
+.page-lead>.hall-title { margin-top:clamp(24px,3vw,38px); }
+.page-lead .hall-note + .hall-note { margin-top:14px; }
+.page-links { display:flex; flex-wrap:wrap; gap:clamp(18px,2.4vw,34px); margin-top:clamp(30px,4vw,46px); }
+.page-links a { font-size:11px; letter-spacing:.12em; color:#c1bab3; text-decoration:none; padding:12px 0; border-bottom:1px solid #48423f; transition:color .3s,border-color .3s; }
+.page-links a:hover { color:var(--paper); border-bottom-color:var(--red); }
+
+/* the index sheet's page group */
+.menu-divider { font-size:10px; letter-spacing:.15em; color:#411008; border-top:1px solid #11100f44; margin-top:26px; padding-top:20px; }
+.chapter-menu nav a { padding:16px 0; text-align:left; font-size:clamp(30px,4vw,51px); line-height:1; letter-spacing:-.05em; border-top:1px solid #11100f44; display:flex; align-items:center; text-decoration:none; }
+.chapter-menu nav a:hover { padding-left:10px; transition:padding .3s; }
+.chapter-menu nav a>span:first-child { font-size:10px; margin-right:20px; letter-spacing:0; vertical-align:middle; color:#411008; }
+
+/* ---- footer: the same face and body size as the sections above ---- */
+.legal { font-size:12px; letter-spacing:.06em; line-height:1.75; gap:clamp(22px,3vw,46px); padding-top:26px; }
+.legal>a { font-size:11px; letter-spacing:.13em; padding:14px 0; border-bottom:1px solid #11100f44; }
+.legal>a:hover { border-bottom-color:currentColor; }
+.credits { font-size:12px; letter-spacing:.1em; gap:clamp(18px,2.6vw,40px); }
+.closing-legal,.closing-legal a { color:#c1bab3; }
+.closing-note { font-size:15px; line-height:1.72; max-width:70ch; color:#c1bab3; }
+.closing-title { margin-top:0; }
+.closing-split { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr)); gap:clamp(28px,4vw,64px); width:100%; max-width:1180px; border-top:1px solid #48423f; margin-top:clamp(38px,5vw,64px); padding-top:1px; text-align:left; }
+.closing-col { padding-top:26px; }
+.closing-col .chapter-topline { color:#8f8880; margin-bottom:6px; }
+.closing-split .closing-nav { display:flex; flex-direction:column; justify-content:flex-start; gap:0; margin:10px 0 0; }
+.closing-split .closing-nav>button,.closing-split .closing-nav>a { display:flex; align-items:baseline; gap:16px; width:100%; text-align:left; font-size:13px; letter-spacing:.055em; line-height:1.4; color:#c1bab3; padding:14px 0; border-bottom:1px solid #2a2622; text-decoration:none; transition:color .3s,padding .3s; }
+.closing-split .closing-nav>button:hover,.closing-split .closing-nav>a:hover { color:var(--paper); padding-left:8px; }
+.closing-split .closing-nav>button:after,.closing-split .closing-nav>a:after { content:"\2192"; margin-left:auto; color:#8f8880; font-size:12px; }
+
+@media(max-width:900px) { .site-nav { display:none; } }
+@media(max-width:699px) {
+  .page-lead { padding-top:118px; }
+  .legal { font-size:11px; gap:12px; }
+  .credits { font-size:10.5px; gap:12px 18px; }
+  .closing-note { font-size:13.5px; }
+  .closing-split .closing-nav>button,.closing-split .closing-nav>a { font-size:12px; }
+}
+@media(prefers-reduced-motion:reduce) { .site-nav a,.closing-split .closing-nav>button,.closing-split .closing-nav>a { transition:none; } }
+
+.header-film,.header-logo { text-decoration:none; }
+html { scroll-padding-top:96px; }   /* the fixed header is 90px; anchor jumps from the sheet need the extra clearance */
+.end-actions a { border-bottom:1px solid #11100f88; padding:18px 0; display:flex; align-items:center; gap:15px; }
+@media(max-width:699px) { .end-actions a { font-size:10px; } }
