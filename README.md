@@ -14,6 +14,8 @@ hall.html                    the room: the stage, the two loops, the booth, the 
 shows.html                   the week: the board, the counter, how the house fills
 visit.html                   coming: the walk, the door, the house rules
 assets/site.css              the source site's app/globals.css, verbatim, + a shim + the hall additions
+assets/type.css              the type pass: @font-face + every size/weight/colour override, loaded last
+assets/fonts/                Archivo variable (latin, wght 100-900, + italic), self-hosted: 74 KB, OFL
 assets/site.js               app/page.tsx + cinema-media.tsx + showcase-controller.tsx + lib/* ported to plain DOM
 assets/gsap.min.js           GSAP 3.15.0 — the source's pinned version, vendored from npm
 assets/ScrollTrigger.min.js
@@ -66,6 +68,32 @@ Everything new uses the source's own vocabulary — `--red / --paper / --ink`, t
 labels with a `1px solid #48423f` rule above them, `clamp()` display type at negative tracking, `#c1bab3` body copy,
 `aspect-ratio:1.7` media tiles with a slight rotation, and `fromTo` + `scrub` reveals at the same durations and
 easings. The `PAUSE FILMS` control pauses the new clip too, since it is a `.cinema-media` panel like the others.
+
+## Type
+
+Everything readable is set in **Archivo** (variable, self-hosted in `assets/fonts/` — no CDN, no build step);
+the site previously ran on `Arial,Helvetica,sans-serif`, which is exactly why the small type looked cheap. The
+`AC` wordmark is the one thing left in Arial, because it is drawn as a logo (950 italic, `-.13em`).
+
+The pass lives entirely in `assets/type.css`, loaded after `site.css`, so the ported stylesheet stays diffable:
+
+- **floors** — nothing readable is under 12px on desktop or 10.5px on mobile (was 8–11px); body copy 15.5–16.5px,
+  labels 11.5–12.5px, the closing note 16.5px
+- **caps only where caps are a marker** — `SCREEN`, `MON`, `01`, `HOUSE FULL`, `OFFICIAL TRAILER`. Every long
+  all-caps string (the legal lines, the clip captions, the legend, the credits, the fact values, the sheet's
+  footer block) was rewritten into sentence case in the HTML/JS, and the tracking on those was cut from `.11em`
+  to `.015–.07em`, which is what makes a small line legible
+- **one convention for the data rows** — `.hall-facts` left column is a caps marker in `#a8a29b`, right column is
+  a sentence-case value in `#efe9e2`, both on `font-variant-numeric:tabular-nums` so the week board and the price
+  list align on their figures
+- **contrast** — the muted greys were lifted one step (`#8f8880` → `#a8a29b` for labels, `#c1bab3` → `#cfc9c2`
+  for body copy), display headings sit at weight 520 with `text-wrap:balance`, `.hall-title em` uses the real
+  italic, `::selection` is red
+- **headings** — `.hall-title` is `clamp(40px,6.6vw,106px)` at `-.042em` instead of the source's `clamp(38px,
+  6.4vw,104px)` at `-.055em`; Archivo needs less negative tracking than Arial to look the same
+
+If the font ever fails to load, the stack falls back to Helvetica/Arial and the page is still correct — only
+the metrics shift.
 
 ## Footer type
 
@@ -152,6 +180,8 @@ Add a `tel:` link to the counter when there is one — deliberately absent for n
 
 ## Rights
 
+**Archivo** (C) 2020 The Archivo Project Authors, SIL Open Font License 1.1 — the two `.woff2` files and
+`assets/fonts/ARCHIVO-LICENSE.md` came from `@fontsource-variable/archivo` on npm, unmodified.
 Film imagery, music and trailers belong to their respective owners; the stills, loops and YouTube ids are
 republished from the source repo, whose `docs/` record the original source pages. This is the hall's own promotional
 page, not an official release of any film.

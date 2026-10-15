@@ -1,0 +1,175 @@
+/* ==========================================================================
+   TYPE PASS — assets/type.css, loaded after assets/site.css on every page.
+
+   Two problems were making the page read as cheap: everything was set in Arial,
+   and the source's small type (9–11px, up to .16em tracking, all caps) was
+   written for one hero line of metadata, not for sentences. So:
+
+   · Archivo (self-hosted, variable 100–900, normal + italic) for all text.
+     The AC wordmark keeps Arial on purpose — it is drawn as a logo at 950 italic.
+   · a real scale: nothing readable is under 12px on desktop / 10.5px on mobile,
+     body copy 15.5–16.5px, micro labels 11.5–12.5px at sensible tracking.
+   · long strings dropped out of full caps into sentence case (done in the HTML);
+     caps stay where they are a marker (SCREEN, MON, 01, ON THIS PAGE).
+   · the muted greys lifted a step for contrast on --ink.
+   · tabular figures on the board and the price rows, balanced wrapping on the
+     display titles.
+
+   site.css is not edited: every rule here is an override that comes later in the
+   cascade, with the same specificity as the rule it replaces.
+   ========================================================================== */
+
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('fonts/archivo-latin-wght-normal.woff2') format('woff2-variations');
+}
+@font-face {
+  font-family: 'Archivo';
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('fonts/archivo-latin-wght-italic.woff2') format('woff2-variations');
+}
+
+:root { --sans: 'Archivo', 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+
+body {
+  font-family: var(--sans);
+  font-weight: 400;
+  font-optical-sizing: auto;
+  font-kerning: normal;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* the logo is drawn, not set in the text face */
+.wordmark, .wordmark * { font-family: Arial, Helvetica, sans-serif; }
+
+/* ---------- display ---------- */
+h1, h2, h3 { font-weight: 520; }
+.hall-title, .chapter-title, .hero-copy h1, .world-copy h2, .manifesto h2, .storm-line h2 { text-wrap: balance; }
+.hall-title { font-size: clamp(40px, 6.6vw, 106px); line-height: 1.02; letter-spacing: -.042em; font-weight: 520; }
+.hall-title em { font-style: italic; }
+.chapter-title { font-weight: 540; letter-spacing: -.045em; }
+.hall-block h3 { font-size: clamp(20px, 2.1vw, 31px); line-height: 1.16; letter-spacing: -.028em; font-weight: 500; }
+.faq summary { font-weight: 500; letter-spacing: -.02em; }
+
+/* ---------- body copy: 15.5px+ and one step brighter ---------- */
+.hall-note { font-size: 15.5px; line-height: 1.72; color: #cfc9c2; max-width: 74ch; }
+.hall-block p { font-size: 15px; line-height: 1.7; color: #cfc9c2; }
+.counter-notes li { font-size: 14.5px; line-height: 1.62; color: #cfc9c2; letter-spacing: .002em; }
+.faq details p { font-size: 15px; line-height: 1.7; color: #cfc9c2; }
+.chapter-caption p { font-size: 14.5px; line-height: 1.6; }
+.menu-description { font-size: 15px; }
+.closing-note { font-size: 16.5px; line-height: 1.75; color: #cfc9c2; max-width: 72ch; }
+
+/* ---------- labels: caps stay, size up, tracking down, weight up ---------- */
+.eyebrow { font-size: 12.5px; font-weight: 520; letter-spacing: .17em; }
+.film-section-label { font-size: 12px; letter-spacing: .07em; font-weight: 500; color: #a8a29b; }
+.film-section-label span:first-child { color: var(--paper); }
+.chapter-topline { font-size: 11.5px; letter-spacing: .1em; font-weight: 520; color: #a8a29b; }
+.chapter-topline > span:first-child { color: var(--red); }
+.credits { font-size: 12.5px; letter-spacing: .08em; font-weight: 520; gap: clamp(18px, 2.6vw, 40px); }
+.legal { font-size: 13px; letter-spacing: .015em; line-height: 1.72; font-weight: 430; }
+.legal > a { font-size: 12px; letter-spacing: .1em; font-weight: 520; }
+.legend { font-size: 11.5px; letter-spacing: .05em; color: #a8a29b; font-weight: 440; }
+.hall-clips figcaption { font-size: 11.5px; line-height: 1.6; letter-spacing: .02em; color: #a8a29b; font-weight: 440; }
+.text-link { font-size: 12px; letter-spacing: .09em; font-weight: 520; }
+.playback-control button { font-size: 11px; letter-spacing: .09em; font-weight: 500; }
+.playback-control > a { font-size: 11.5px; letter-spacing: .07em; font-weight: 500; }
+.chapter-play { font-size: 10.5px; letter-spacing: .09em; font-weight: 520; }
+.page-links a { font-size: 12px; letter-spacing: .09em; font-weight: 520; }
+
+/* ---------- the header ---------- */
+.header-film { font-size: 12.5px; letter-spacing: .09em; font-weight: 520; }
+.menu-toggle { font-size: 12px; letter-spacing: .1em; font-weight: 520; }
+.site-nav a { font-size: 12px; letter-spacing: .09em; font-weight: 500; opacity: .68; }
+.site-nav a:hover, .site-nav a[aria-current="page"] { opacity: 1; }
+
+/* ---------- data: aligned figures, readable rows ---------- */
+.hall-facts > li { font-size: 12.5px; letter-spacing: .05em; padding: 21px 22px; font-variant-numeric: tabular-nums; }
+.hall-facts > li > span { color: #a8a29b; font-weight: 500; }
+.hall-facts > li > b { color: #efe9e2; font-weight: 470; }
+.schedule > div { font-size: 11.5px; letter-spacing: .05em; font-variant-numeric: tabular-nums; font-weight: 450; }
+.schedule .day { font-size: 11.5px; letter-spacing: .13em; color: #a8a29b; font-weight: 540; }
+.schedule .show > em { font-size: 13px; color: #e4ded7; font-style: normal; font-weight: 480; }
+.schedule .show > span { color: #8f8880; font-size: 10.5px; letter-spacing: .08em; font-weight: 500; }
+.schedule .today .day { color: var(--paper); }
+.faq .num { font-size: 10.5px; letter-spacing: .1em; color: #8f8880; }
+.closing-split .closing-nav > button, .closing-split .closing-nav > a { font-size: 14.5px; letter-spacing: .01em; line-height: 1.45; font-weight: 430; color: #cfc9c2; }
+.closing-split .closing-nav > button:after, .closing-split .closing-nav > a:after { color: #8f8880; }
+
+/* ---------- the red index sheet ---------- */
+.menu-heading { font-size: 13.5px; letter-spacing: .14em; }
+.chapter-menu nav button, .chapter-menu nav a { font-weight: 540; letter-spacing: -.035em; }
+.chapter-menu > p:last-child { font-size: 12px; line-height: 1.7; letter-spacing: .015em; font-weight: 470; color: #3a0e06; }
+.chapter-menu nav a > span:first-child { color: #411008; font-weight: 520; }
+.menu-divider { font-size: 11px; letter-spacing: .13em; font-weight: 540; }
+
+/* ---------- mobile floors ---------- */
+@media (max-width: 699px) {
+  .hall-title { font-size: 11.5vw; letter-spacing: -.038em; }
+  .hall-note { font-size: 14px; line-height: 1.68; }
+  .closing-note { font-size: 14.5px; }
+  .hall-block p { font-size: 14px; }
+  .counter-notes li, .faq details p { font-size: 13.5px; }
+  .hall-lead > .eyebrow { font-size: 11px; letter-spacing: .15em; }
+  .film-section-label { font-size: 10.5px; letter-spacing: .05em; }
+  .chapter-topline { font-size: 10.5px; }
+  .credits { font-size: 10.5px; gap: 12px 18px; }
+  .legal { font-size: 12px; }
+  .legend { font-size: 10.5px; }
+  .hall-facts > li { font-size: 11px; padding: 15px 14px; }
+  .hall-facts > li > b { font-size: 12.5px; }
+  .schedule > div { font-size: 10.5px; }
+  .schedule .show > em { font-size: 11.5px; }
+  .schedule .day { font-size: 10.5px; letter-spacing: .11em; }
+  .schedule .show > span { font-size: 9.5px; }
+  .closing-split .closing-nav > button, .closing-split .closing-nav > a { font-size: 13.5px; }
+  .playback-control button { font-size: 10px; }
+  .chapter-play { font-size: 10px; }
+  .hero-footer { font-size: 10.5px; }
+  .chapter-menu > p:last-child { font-size: 11px; }
+}
+
+/* dark-on-red panels get a touch more weight so the knock-out stays crisp */
+.end-card .credits, .end-card .legal { font-weight: 500; }
+.end-mark > span:first-child { font-size: 11.5px; letter-spacing: .14em; font-weight: 520; }
+.end-actions { font-size: 12px; letter-spacing: .09em; font-weight: 520; }
+
+/* ---------- small finish ---------- */
+::selection { background:var(--red); color:var(--paper); }
+p { text-wrap:pretty; }
+h1, h2, h3 { text-wrap:balance; }
+
+/* ---------- the ported film half: same floor, nothing below 10.5px ---------- */
+.hall-tiles figcaption { font-size: 12px; line-height: 1.62; letter-spacing: .015em; color: #a8a29b; }
+.hall-tiles figcaption b { font-weight: 520; letter-spacing: .11em; color: #cfc9c2; font-size: 11px; }
+.wide-bottom { font-size: 12px; letter-spacing: .07em; }
+.world-copy > span { font-size: 11.5px; letter-spacing: .14em; }
+.side-note { font-size: 11.5px; letter-spacing: .09em; color: #8f8880; }
+.portrait-mask span { font-size: 11.5px; letter-spacing: .07em; }
+.hero-title > span:first-child { font-size: 11px; letter-spacing: .09em; }
+.car-title > span:first-child { font-size: 11.5px; letter-spacing: .22em; }
+.chapter-caption .text-link { font-size: 12px; }
+.chapter-menu nav span { font-size: 11px; }
+.menu-divider { font-size: 11px; letter-spacing: .13em; }
+
+@media (max-width: 699px) {
+  .header-film { font-size: 10.5px; letter-spacing: .06em; }
+  .hall-tiles figcaption { font-size: 10.5px; }
+  .hall-tiles figcaption b { font-size: 10px; }
+  .wide-bottom { font-size: 10.5px; }
+  .world-copy > span { font-size: 10.5px; }
+  .side-note { font-size: 10px; }
+  .portrait-mask span { font-size: 10px; }
+  .chapter-caption .text-link { font-size: 11px; }
+  .chapter-caption p { font-size: 13.5px; }
+  .film-section-label span:last-child { max-width: 46%; }
+  .end-mark > span:first-child { font-size: 10.5px; }
+  .car-title > span:first-child { font-size: 10px; letter-spacing: .18em; }
+}

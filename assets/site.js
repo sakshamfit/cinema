@@ -51,19 +51,19 @@
     ['yt-0.jpg', 'THE MARK · STATION ROAD', 'Repainted by hand the morning the show changes. Four hundred metres from the station, opposite the bus stand.']
   ];
   var hallFacts = [
-    ['SCREEN', '9.1 m × 4.7 m'], ['PROJECTOR', '4K LASER'], ['SOUND', 'DOLBY 7.1'],
-    ['SEATS', '620 — 380 STALL, 240 BALCONY'], ['AIR', 'CENTRAL, BOTH DECKS'],
-    ['ACCESS', 'RAMP AT THE COUNTER · BAY ROW K'], ['INTERVAL', '12 MINUTES, ONE BREAK'],
-    ['HOUSE OUT', 'BY 10:00 PM']
+    ['SCREEN', '9.1 m × 4.7 m'], ['PROJECTOR', '4K laser'], ['SOUND', 'Dolby 7.1'],
+    ['SEATS', '620 — 380 stall, 240 balcony'], ['AIR', 'Central, both decks'],
+    ['ACCESS', 'Ramp at the counter · bay row K'], ['INTERVAL', '12 minutes, one break'],
+    ['HOUSE OUT', 'By 10:00 PM']
   ];
   var priceFacts = [
     ['BALCONY', '₹60'], ['STALL', '₹100'], ['FIRST SHOW, TUESDAY', '₹40'],
-    ['GROUP OF TEN OR MORE', '₹50 EACH'], ['STUDENT, WITH CARD', 'HALF THE STALL RATE']
+    ['GROUP OF TEN OR MORE', '₹50 each'], ['STUDENT, WITH CARD', 'Half the stall rate']
   ];
   var visitFacts = [
-    ['ADDRESS', 'STATION ROAD, MADHUBAN, BIHAR 848202'], ['LANDMARK', 'OPPOSITE THE BUS STAND'],
-    ['FROM THE STATION', '400 m — A SIX MINUTE WALK'], ['AUTO-RICKSHAW', '₹20 FROM THE STAND'],
-    ['PARKING', '40 TWO-WHEELERS ON THE PREMISES'], ['COUNTER HOURS', '9:00 AM — 10:00 PM']
+    ['ADDRESS', 'Station Road, Madhuban, Bihar 848202'], ['LANDMARK', 'Opposite the bus stand'],
+    ['FROM THE STATION', '400 m — a six minute walk'], ['AUTO-RICKSHAW', '₹20 from the stand'],
+    ['PARKING', '40 two-wheelers on the premises'], ['COUNTER HOURS', '9:00 AM — 10:00 PM']
   ];
   var houseFaq = [
     ['Do you sell tickets online?', 'No. The window is the counter and the counter is the window: cash, this show, no seat numbers. The moment that changes, this page says so first.'],
