@@ -1,5 +1,5 @@
 /* -------------------------------------------------------------------------
-   Forest Cinema, Madhuban — site behaviour.
+   Arush Cineplex, Madhuban — site behaviour.
    Ported line-for-line from the source site's app/page.tsx,
    components/cinema-media.tsx, components/showcase-controller.tsx,
    lib/youtube-player.ts and lib/cinema-playback.ts (gireeshkumarreddy/pk),
@@ -14,10 +14,11 @@
 
   /* ---- the three films (source: app/page.tsx `films`) ---- */
   var films = [
-    { title: 'Hungry Cheetah', subtitle: 'THE FIRST GLIMPSE', id: '7Y5q41D8_hs', image: 'OG011.webp', text: 'A silence. A silhouette. A name that needs no introduction.', show: 'FIRST SHOW · 10:00 AM' },
-    { title: 'Firestorm', subtitle: 'THE SOUND OF OG', id: 'FbXOsVByKmk', image: 'og-dual-guns.jpg', text: 'The calm ends here. Music by Thaman S.', show: 'SECOND SHOW · 2:30 PM' },
-    { title: 'They Call Him OG', subtitle: 'THE OFFICIAL TRAILER', id: '_8J8LwoVH_0', image: 'og-truck.jpg', text: 'Pawan Kalyan. Emraan Hashmi. A film by Sujeeth.', show: 'FULL HOUSE · 7:00 PM' }
+    { title: 'Holocaust', subtitle: 'THE FEATURE', id: '7Y5q41D8_hs', image: 'OG011.webp', text: 'A silence. A silhouette. A name that needs no introduction. The entrance exactly as it runs on our screen.', show: 'FIRST SHOW · 10:00 AM' },
+    { title: 'The Sound', subtitle: 'THE HOUSE MIX', id: 'FbXOsVByKmk', image: 'og-dual-guns.jpg', text: 'The calm ends here. Checked at 9:15 AM, again after the interval, on the same frame every week.', show: 'SECOND SHOW · 2:30 PM' },
+    { title: 'The Trailer', subtitle: 'OFFICIAL PROMOTIONAL FILM', id: '_8J8LwoVH_0', image: 'og-truck.jpg', text: 'Two minutes, twenty seconds. What the marquee has been carrying all week, at the counter, on request.', show: 'FULL HOUSE · 7:00 PM' }
   ];
+
   var orbitImages = ['og-dual-guns.jpg', 'OG007.webp', 'OG015.webp', 'OG009.webp', 'OG002.jpg', 'og-truck.jpg', 'OG008.webp', 'OG011.webp', 'OG013.webp', 'OG016.jpg'];
   var constellationImages = ['OG007.webp', 'OG008.webp', 'OG011.webp', 'og-dual-guns.jpg', 'OG009.webp'];
   var DIMS = {"OG002.jpg":[1000,1500],"OG007.webp":[948,1400],"OG008.webp":[1018,1400],"OG009.webp":[617,1101],"OG011.webp":[1400,584],"OG013.webp":[933,1400],"OG015.webp":[1400,1400],"OG016.jpg":[1000,1500],"og-dual-guns.jpg":[1400,788],"og-portrait.jpg":[1400,788],"og-title-original.webp":[1399,954],"og-truck.jpg":[1399,988],"omi.jpg":[1390,783],"poster-4.jpg":[934,1400],"poster-6.jpg":[934,1400],"poster-9.jpg":[933,1400],"yt-0.jpg":[1280,720]};
@@ -39,6 +40,47 @@
     el.draggable = false;
     return el;
   }
+
+
+  /* ---- the hall's own content (new sections; same components, same tokens) ---- */
+  var hallTiles = [
+    ['poster-9.jpg', 'THE LAMP · 4K LASER', 'Calibrated on Mondays against the same frame. The eye close-up is the test: if it is soft, the show does not start.'],
+    ['poster-4.jpg', 'THE CLOTH · 9.1 × 4.7 M', 'Matte white, no gain, no curve. Rain, fire and a red sky are all the same grey until the film tells them what to be.'],
+    ['poster-6.jpg', 'THE ROOM · 620 SEATS', '380 stall, 240 balcony. The back row of the stall is the seat the projectionist sits in when he is bored.'],
+    ['omi.jpg', 'THE AISLE · TWO EXITS', 'Both unblocked, both lit, both swept before the first show. The interval is twelve minutes and the queue for the counter uses the whole of it.'],
+    ['yt-0.jpg', 'THE MARK · STATION ROAD', 'Repainted by hand the morning the show changes. Four hundred metres from the station, opposite the bus stand.']
+  ];
+  var hallFacts = [
+    ['SCREEN', '9.1 m × 4.7 m'], ['PROJECTOR', '4K LASER'], ['SOUND', 'DOLBY 7.1'],
+    ['SEATS', '620 — 380 STALL, 240 BALCONY'], ['AIR', 'CENTRAL, BOTH DECKS'],
+    ['ACCESS', 'RAMP AT THE COUNTER · BAY ROW K'], ['INTERVAL', '12 MINUTES, ONE BREAK'],
+    ['HOUSE OUT', 'BY 10:00 PM']
+  ];
+  var priceFacts = [
+    ['BALCONY', '₹60'], ['STALL', '₹100'], ['FIRST SHOW, TUESDAY', '₹40'],
+    ['GROUP OF TEN OR MORE', '₹50 EACH'], ['STUDENT, WITH CARD', 'HALF THE STALL RATE']
+  ];
+  var visitFacts = [
+    ['ADDRESS', 'STATION ROAD, MADHUBAN, BIHAR 848202'], ['LANDMARK', 'OPPOSITE THE BUS STAND'],
+    ['FROM THE STATION', '400 m — A SIX MINUTE WALK'], ['AUTO-RICKSHAW', '₹20 FROM THE STAND'],
+    ['PARKING', '40 TWO-WHEELERS ON THE PREMISES'], ['COUNTER HOURS', '9:00 AM — 10:00 PM']
+  ];
+  var houseFaq = [
+    ['Do you sell tickets online?', 'No. The window is the counter and the counter is the window: cash, this show, no seat numbers. The moment that changes, this page says so first.'],
+    ['Can I pick my seat?', 'There is no picking. Stall or balcony, first come. If you want the middle of the stall on the 7:00 PM, be here an hour early — ten minutes is not early.'],
+    ['Can we carry food in?', 'Outside food stays outside. The counter sells packets and water and it is open the whole show; the 2:30 house buys before the doors open, the 7:00 house buys at interval.'],
+    ['Is there a 3D show?', 'No. One screen, 2D, one projector, and a lamp we keep honest. Two shows a day is not a house that cuts corners on glass.'],
+    ['Children?', 'The certificate is U/A. Children may attend with an adult; the 10:00 AM house is the one families take and it is the cheapest in the week.'],
+    ['Wheelchair access?', 'Ramp at the counter, one bay in row K of the stall with a companion seat beside it. Say it at the window and the aisle stays clear for you.'],
+    ['What if my phone rings?', 'Someone will ask you to put it face down. The show does not stop for anyone, and the balcony will let you know what it thinks.'],
+    ['What about the last show?', 'Doors at 6:40, projector at 7:00, house out by ten. The shutter comes down on the hour and the marquee light goes with it.']
+  ];
+  var weekDays = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
+  var weekShows = [
+    { time: '10:00 AM', note: 'FIRST SHOW', full: [] },
+    { time: '2:30 PM', note: 'SECOND SHOW', full: [5] },
+    { time: '7:00 PM', note: 'FULL HOUSE', full: [4, 5, 6] }
+  ];
 
   /* =======================================================================
      youtube player + transport (source: lib/youtube-player.ts,
@@ -99,15 +141,16 @@
   function CinemaMedia(root) {
     var self = this;
     this.root = root;
-    var id = root.dataset.id;
+    var id = root.dataset.id || '';
     this.id = id;
+    this.hasStream = !!id;
     this.priority = root.dataset.priority === 'true';
     this.aperture = Number(root.dataset.aperture || 2.39);
     var start = root.dataset.start ? Number(root.dataset.start) : null;
     var end = root.dataset.end ? Number(root.dataset.end) : null;
     this.loopStart = start !== null ? start : (id === '_8J8LwoVH_0' ? 100 : id === 'FbXOsVByKmk' ? 52 : 42);
     this.loopEnd = end !== null ? end : this.loopStart + 21;
-    this.localSource = id === 'FbXOsVByKmk' ? 'firestorm' : (this.priority || id === '_8J8LwoVH_0') ? 'katana' : 'entrance';
+    this.localSource = root.dataset.clip || (id === 'FbXOsVByKmk' ? 'firestorm' : (this.priority || id === '_8J8LwoVH_0') ? 'katana' : 'entrance');
     this.visible = false;
     this.paused = false;
     this.active = false;
@@ -229,6 +272,7 @@
 
   CinemaMedia.prototype.mountPlayer = function () {
     var self = this;
+    if (!this.hasStream) { this.setState('local'); return; }
     if (this.mounted || reduced) return;
     this.mounted = true;
     this.setState('loading');
@@ -334,12 +378,65 @@
   });
 
   var menuNav = document.getElementById('menuNav');
-  [['home', 'The return'], ['story', 'His world'], ['films', 'Show times'], ['end', 'Box office']].forEach(function (item, i) {
+  [['home', 'The show'], ['about', 'About this page'], ['story', 'His world'], ['world', 'The fragments'], ['films', 'Show times'], ['hall', 'The hall'], ['schedule', 'The week'], ['visit', 'Getting here']].forEach(function (item, i) {
     var b = document.createElement('button');
     b.type = 'button';
     b.dataset.nav = item[0];
     b.innerHTML = '<span>0' + (i + 1) + '</span>' + item[1];
     menuNav.appendChild(b);
+  });
+
+
+  function rows(list, host, cls) {
+    var el = document.getElementById(host);
+    list.forEach(function (row) {
+      var li = document.createElement('li');
+      if (cls) li.className = cls;
+      li.innerHTML = '<span>' + row[0] + '</span><b>' + row[1] + '</b>';
+      el.appendChild(li);
+    });
+  }
+
+  var tilesHost = document.getElementById('hallTiles');
+  hallTiles.forEach(function (tile) {
+    var fig = document.createElement('figure');
+    var box = document.createElement('span');
+    box.appendChild(img(tile[0], tile[1]));
+    var cap = document.createElement('figcaption');
+    cap.innerHTML = '<b>' + tile[1] + '</b><br>' + tile[2];
+    fig.appendChild(box);
+    fig.appendChild(cap);
+    tilesHost.appendChild(fig);
+  });
+
+  rows(hallFacts, 'hallFacts');
+  rows(priceFacts, 'priceFacts');
+  rows(visitFacts, 'visitFacts');
+
+  var grid = document.getElementById('scheduleGrid');
+  var todayIdx = (new Date().getDay() + 6) % 7;   // 0 = Monday
+  weekDays.forEach(function (day, di) {
+    var col = document.createElement('div');
+    if (di === todayIdx) col.className = 'today';
+    var head = document.createElement('div');
+    head.className = 'day';
+    head.textContent = day + (di === todayIdx ? ' · TODAY' : '');
+    col.appendChild(head);
+    weekShows.forEach(function (show) {
+      var cell = document.createElement('div');
+      var isFull = show.full.indexOf(di) > -1;
+      cell.className = 'show' + (isFull ? ' full' : '');
+      cell.innerHTML = '<em>' + show.time + '</em><span>' + (isFull ? 'HOUSE FULL' : 'AVAILABLE') + '</span>';
+      col.appendChild(cell);
+    });
+    grid.appendChild(col);
+  });
+
+  var faq = document.getElementById('faq');
+  houseFaq.forEach(function (item, i) {
+    var details = document.createElement('details');
+    details.innerHTML = '<summary>' + item[0] + '<span class="num">0' + (i + 1) + '</span></summary><p>' + item[1] + '</p>';
+    faq.appendChild(details);
   });
 
   document.querySelectorAll('.cinema-media').forEach(function (el) { media.push(new CinemaMedia(el)); });
@@ -530,12 +627,15 @@
     var journey = document.getElementById('home');
     var wide = document.getElementById('story');
     var ending = document.getElementById('end');
+    var about = document.getElementById('about');
+    var closing = document.getElementById('thanks');
     function updateHeader() {
       var y = window.scrollY;
       var phase = y / Math.max(1, journey.offsetHeight - window.innerHeight) * 9;
       var dark = (phase >= 1.0 && phase < 2.6) || phase >= 5.7;
+      if (y >= about.offsetTop - 75 && y < wide.offsetTop - 75) dark = false;   // hall addition
       if (y >= wide.offsetTop - 75) dark = false;
-      if (y >= ending.offsetTop - 75) dark = true;
+      if (y >= ending.offsetTop - 75 && y < closing.offsetTop - 75) dark = true; // hall addition
       header.style.color = dark ? '#11100f' : '#eeeae4';
       header.dataset.tone = dark ? 'dark' : 'light';
     }
@@ -563,6 +663,50 @@
     gsap.fromTo('.end-car-card', { clipPath: 'inset(18% 8% 18% 8%)', y: 75 }, { clipPath: 'inset(0% 0% 0% 0%)', y: 0, ease: 'none', scrollTrigger: { trigger: '.end-car-card', start: 'top 95%', end: 'top 35%', scrub: 0.6 } });
     gsap.fromTo('.end-mark', { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: '.end-card', start: 'top 65%' } });
     gsap.to('.progress-line', { scaleX: 1, ease: 'none', scrollTrigger: { trigger: main, start: 'top top', end: 'bottom bottom', scrub: true } });
+
+    /* ---- hall additions: same reveal vocabulary (fromTo + scrub, power2) ---- */
+    var hallCopy = ['.hall-lead>.eyebrow', '.hall-lead>.hall-title', '.hall-lead>.hall-note', '.hall-clip'];
+    hallCopy.forEach(function (sel) {
+      gsap.utils.toArray(sel).forEach(function (el) {
+        var section = el.closest('section');
+        gsap.fromTo(el, { y: 46, opacity: 0 }, {
+          y: 0, opacity: 1, ease: 'none',
+          scrollTrigger: { trigger: section, start: 'top 82%', end: 'top 34%', scrub: 0.6 }
+        });
+      });
+    });
+    gsap.utils.toArray('.hall-blocks').forEach(function (host) {
+      gsap.fromTo(host.children, { y: 58, opacity: 0 }, {
+        y: 0, opacity: 1, duration: 0.7, stagger: 0.09, ease: 'power2.out',
+        scrollTrigger: { trigger: host, start: 'top 80%' }
+      });
+    });
+    gsap.utils.toArray('.hall-tiles figure, .hall-facts>li, .counter-notes li').forEach(function (el) {
+      gsap.fromTo(el, { y: 40, opacity: 0 }, {
+        y: 0, opacity: 1, ease: 'none',
+        scrollTrigger: { trigger: el, start: 'top 92%', end: 'top 70%', scrub: 0.6 }
+      });
+    });
+    gsap.utils.toArray('.schedule>div').forEach(function (col, i) {
+      gsap.fromTo(col, { y: 62, opacity: 0 }, {
+        y: 0, opacity: 1, ease: 'none', delay: 0,
+        scrollTrigger: { trigger: '.schedule', start: 'top ' + (92 - i * 2) + '%', end: 'top ' + (60 - i * 2) + '%', scrub: 0.6 }
+      });
+    });
+    gsap.utils.toArray('.faq details').forEach(function (el, i) {
+      gsap.fromTo(el, { y: 34, opacity: 0 }, {
+        y: 0, opacity: 1, ease: 'none',
+        scrollTrigger: { trigger: el, start: 'top 94%', end: 'top 76%', scrub: 0.6 }
+      });
+    });
+    gsap.utils.toArray('.hall-title').forEach(function (title) {
+      gsap.fromTo(title, { y: 60 }, { y: -30, ease: 'none', scrollTrigger: { trigger: title.closest('section'), start: 'top bottom', end: 'bottom top', scrub: 0.6 } });
+    });
+    gsap.utils.toArray('.hall-clip').forEach(function (clip) {
+      gsap.fromTo(clip, { y: 0 }, { y: 70, ease: 'none', scrollTrigger: { trigger: clip, start: 'top bottom', end: 'bottom top', scrub: true } });
+    });
+    gsap.fromTo('.closing .end-mark', { y: 70, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: '.closing', start: 'top 68%' } });
+    gsap.fromTo('.closing-nav button', { y: 26, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, stagger: 0.05, ease: 'power2.out', scrollTrigger: { trigger: '.closing-nav', start: 'top 86%' } });
   }, main);
 
   window.addEventListener('load', function () { ScrollTrigger.refresh(); media.forEach(function (m) { m.sizeVideo(); }); });
@@ -713,7 +857,7 @@
           capture.getTracks().forEach(function (track) { track.stop(); });
           if (objectUrl) URL.revokeObjectURL(objectUrl);
           objectUrl = URL.createObjectURL(new Blob(chunks, { type: type }));
-          download = { url: objectUrl, name: 'Forest-Cinema-55-Second-Showcase.' + (type.indexOf('mp4') > -1 ? 'mp4' : 'webm') };
+          download = { url: objectUrl, name: 'Arush-Cineplex-55-Second-Showcase.' + (type.indexOf('mp4') > -1 ? 'mp4' : 'webm') };
           paint();
         };
         capture.getVideoTracks()[0].addEventListener('ended', stop, { once: true });
@@ -734,7 +878,7 @@
         var veil = document.createElement('div');
         veil.className = 'showcase-intro';
         veil.setAttribute('aria-hidden', 'true');
-        veil.innerHTML = '<span class="wordmark"><img src="' + MEDIA + 'og-title-original.webp" alt="" width="1399" height="954"></span>';
+        veil.innerHTML = '<span class="wordmark" role="img" aria-label="Arush Cineplex">AC</span>';
         root.appendChild(veil);
       }
       controls = document.createElement('div');

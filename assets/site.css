@@ -276,3 +276,124 @@ body[data-overlay="open"]{overflow:hidden}
 [data-slot="sheet-content"][data-state="open"]{animation:sheetIn .5s cubic-bezier(.32,.72,0,1)}
 [data-slot="sheet-content"][data-state="closed"]{animation:sheetOut .3s cubic-bezier(0,0,.2,1)}
 @media(prefers-reduced-motion:reduce){[data-slot="dialog-content"],[data-slot="sheet-content"],[data-slot="dialog-overlay"],[data-slot="sheet-overlay"]{animation:none!important}}
+
+/* ==========================================================================
+   HALL ADDITIONS — added for the cinema-hall version. Nothing above this line
+   is changed; these rules only style the new sections (about / the hall /
+   the week / the counter / house rules / getting here / closing) and adapt the
+   text AC mark that replaces the source's image logo. Same tokens, same
+   weights, same 1px borders, same clamp() scale.
+   ========================================================================== */
+/* the mark is now text, so it needs a colour the source gave to its artwork */
+.intro-mark { color:var(--paper); }
+.chapter-menu { overflow-y:auto; }
+.wordmark { overflow:visible; }
+
+/* ---------- shared section shell ---------- */
+.hall-lead { background:var(--ink); color:var(--paper); padding:0 5% 9%; }
+.hall-lead>.eyebrow { display:block; margin:clamp(40px,6vw,74px) 0 22px; }
+.hall-note { font-size:14px; line-height:1.65; color:#c1bab3; max-width:78ch; margin:26px 0 0; }
+.hall-note b { font-weight:400; color:var(--paper); }
+.hall-title { font-weight:400; font-size:clamp(38px,6.4vw,104px); line-height:.98; letter-spacing:-.055em; margin:clamp(34px,5vw,64px) 0 0; }
+.hall-title em { color:var(--red); }
+
+/* ---------- 02 about: the three blocks ---------- */
+.hall-blocks { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr)); gap:clamp(26px,4vw,58px); border-top:1px solid #48423f; margin-top:clamp(46px,6vw,86px); padding-top:1px; }
+.hall-block { padding-top:26px; }
+.hall-block h3 { font-size:clamp(21px,2.2vw,34px); font-weight:400; line-height:1.1; letter-spacing:-.035em; margin:0 0 14px; }
+.hall-block p { font-size:13.5px; line-height:1.62; color:#c1bab3; }
+
+/* ---------- 07 the hall: clip + tile strip ---------- */
+.hall-clips { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr)); gap:clamp(14px,2vw,26px); margin-top:clamp(38px,5vw,64px); }
+.hall-clips figure { margin:0; display:flex; flex-direction:column; gap:10px; }
+.hall-clips figcaption { font-size:9px; line-height:1.5; letter-spacing:.11em; color:#8f8880; }
+.hall-clip { position:relative; aspect-ratio:1.8; overflow:hidden; background:#17110e; }
+.hall-clip .cinema-media { position:absolute; inset:0; }
+.hall-tiles { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,215px),1fr)); gap:clamp(12px,1.8vw,22px); margin-top:clamp(40px,5vw,68px); }
+.hall-tiles figure { margin:0; display:flex; flex-direction:column; gap:10px; }
+.hall-tiles figure>span { display:block; aspect-ratio:1.7; overflow:hidden; position:relative; background:#17110e; }
+.hall-tiles figure:nth-child(3n+1)>span { transform:rotate(-1.1deg); }
+.hall-tiles figure:nth-child(3n)>span { transform:rotate(1.3deg); }
+.hall-tiles img { width:100%; height:100%; object-fit:cover; transition:transform 1s cubic-bezier(.2,.7,.3,1); }
+.hall-tiles figure:hover img { transform:scale(1.035); }
+.hall-tiles figcaption { font-size:9px; line-height:1.5; letter-spacing:.11em; color:#8f8880; }
+
+/* ---------- fact / price / spec rows ---------- */
+.hall-facts { list-style:none; margin:clamp(40px,5vw,68px) 0 0; padding:0; display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr)); gap:1px; background:#48423f; border:1px solid #48423f; }
+.hall-facts>li { background:var(--ink); padding:20px 22px; display:flex; align-items:baseline; justify-content:space-between; gap:18px; font-size:11px; letter-spacing:.1em; }
+.hall-facts>li>span:first-child { color:#8f8880; }
+.hall-facts>li>b { font-weight:400; color:var(--paper); text-align:right; }
+.hall-facts>li>i { font-style:normal; color:var(--red); }
+
+/* ---------- 08 the week board ---------- */
+.schedule { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:1px; background:#48423f; border:1px solid #48423f; margin-top:clamp(40px,5vw,64px); }
+.schedule>div { background:var(--ink); padding:16px 12px 18px; display:flex; flex-direction:column; gap:11px; font-size:10px; letter-spacing:.09em; }
+.schedule .day { color:#8f8880; border-bottom:1px solid #2a2622; padding-bottom:11px; font-size:10px; letter-spacing:.16em; }
+.schedule .show { display:flex; flex-direction:column; gap:3px; }
+.schedule .show>em { font-style:normal; color:#c1bab3; }
+.schedule .show>span { color:#8f8880; }
+.schedule .full>span { color:var(--red); }
+.schedule .today .day { color:var(--paper); }
+.schedule .today { background:#171310; }
+.legend { display:flex; flex-wrap:wrap; gap:26px; align-items:center; margin-top:20px; font-size:9px; letter-spacing:.11em; color:#8f8880; }
+.legend>span { display:inline-flex; align-items:center; gap:9px; }
+.dot-open,.dot-full { width:7px; height:7px; border-radius:50%; background:#c1bab3; display:inline-block; }
+.dot-full { background:var(--red); }
+
+/* ---------- 09 the counter ---------- */
+.counter-grid { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.05fr); gap:clamp(26px,4vw,64px); align-items:start; margin-top:clamp(34px,4vw,54px); }
+.counter-notes { border-top:1px solid #48423f; padding-top:22px; }
+.counter-notes ul { list-style:none; margin:14px 0 0; padding:0; display:flex; flex-direction:column; gap:13px; }
+.counter-notes li { font-size:13px; line-height:1.55; color:#c1bab3; padding-left:20px; position:relative; }
+.counter-notes li:before { content:""; position:absolute; left:0; top:.62em; width:9px; height:1px; background:var(--red); }
+
+/* ---------- 10 house rules / questions ---------- */
+.faq { margin-top:clamp(36px,5vw,62px); border-top:1px solid #48423f; }
+.faq details { border-bottom:1px solid #48423f; }
+.faq summary { list-style:none; cursor:pointer; display:flex; align-items:center; gap:18px; padding:19px 0; font-size:clamp(17px,2.1vw,27px); line-height:1.15; letter-spacing:-.03em; transition:padding .3s; }
+.faq summary::-webkit-details-marker { display:none; }
+.faq summary:hover { padding-left:9px; }
+.faq summary:before { content:"+"; color:var(--red); font-size:15px; line-height:1; }
+.faq details[open] summary:before { content:"\2013"; }
+.faq details p { margin:0; padding:0 0 22px 33px; max-width:74ch; font-size:13.5px; line-height:1.65; color:#c1bab3; }
+.faq .num { margin-left:auto; font-size:9px; letter-spacing:.12em; color:#8f8880; }
+
+/* ---------- 11 getting here ---------- */
+.visit { display:grid; grid-template-columns:minmax(0,1.05fr) minmax(0,1fr); gap:clamp(26px,4vw,70px); align-items:start; margin-top:clamp(30px,4vw,48px); }
+.visit-actions { display:flex; flex-wrap:wrap; gap:34px; margin-top:34px; }
+.visit-facts { margin-top:0; grid-template-columns:1fr; }
+
+/* ---------- 12 closing ---------- */
+.closing { background:var(--ink); color:var(--paper); padding:clamp(64px,8vw,110px) 5% 26px; display:flex; flex-direction:column; align-items:center; text-align:center; }
+.closing .end-mark { margin:clamp(34px,5vw,54px) 0 clamp(26px,4vw,44px); }
+.closing .end-mark .wordmark { font-size:clamp(120px,19vw,300px); color:var(--red); filter:none; }
+.closing-note { text-align:left; max-width:62ch; }
+.closing-nav { display:flex; flex-wrap:wrap; justify-content:center; gap:12px 30px; margin:clamp(36px,5vw,58px) 0 clamp(30px,4vw,44px); }
+.closing-nav button { font-size:10px; letter-spacing:.14em; padding:9px 0; border-bottom:1px solid #48423f; transition:border-color .3s, color .3s; }
+.closing-nav button:hover { color:var(--red); border-color:var(--red); }
+.closing-legal { border-top-color:#48423f; color:#8f8880; text-align:left; }
+
+@media(max-width:699px) {
+  .hall-lead { padding:0 6% 10%; }
+  .hall-title { font-size:11vw; }
+  .hall-lead>.eyebrow { font-size:9px; }
+  .hall-note { font-size:12.5px; }
+  .hall-blocks { gap:34px; margin-top:44px; }
+  .hall-tiles { grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+  .hall-tiles figcaption { font-size:8px; }
+  .hall-facts>li { padding:15px 14px; font-size:9px; flex-direction:column; align-items:flex-start; gap:6px; }
+  .hall-facts>li>b { text-align:left; font-size:12px; }
+  .schedule { grid-template-columns:repeat(4,minmax(0,1fr)); }
+  .schedule>div { padding:13px 10px 15px; font-size:9px; }
+  .legend { gap:13px; font-size:8px; }
+  .counter-grid,.visit { grid-template-columns:1fr; gap:32px; }
+  .counter-notes li,.faq details p { font-size:12.5px; }
+  .faq summary { padding:16px 0; gap:13px; }
+  .faq details p { padding-left:26px; }
+  .hall-clip { aspect-ratio:1.35; }
+}
+@media(min-width:1700px) { .hall-title { font-size:96px; } .hall-blocks { gap:74px; } }
+@media(prefers-reduced-motion:reduce) {
+  .hall-tiles img,.faq summary { transition:none; }
+  .schedule>div,.hall-block,.hall-tiles figure,.faq details,.closing-nav button { opacity:1!important; transform:none!important; }
+}
