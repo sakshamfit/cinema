@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Ethan Vale — I See Through the Wild</title>
-<meta name="description" content="Wildlife photography archive by Ethan Vale. Field notes from natural encounters, captured without intervention.">
+<title>Forest Cinema, Madhuban — Holocaust · Now Showing</title>
+<meta name="description" content="Forest Cinema, Madhuban, Bihar — a single-screen house. The still archive for the current show, Holocaust, screened from our stall.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
@@ -454,16 +454,16 @@ body.lit #lit{opacity:1;pointer-events:auto}
 <div id="stage">
   <div id="world">
     <div id="orb"></div>
-    <h1 id="headline"><span class="inner"><span style="--i:0">I</span> <span style="--i:1">See</span> <span style="--i:2">Through</span> <span style="--i:3">the</span> <span style="--i:4">Wild</span></span></h1>
+    <h1 id="headline"><span class="inner"><span style="--i:0">Holocaust</span> <span style="--i:1">is</span> <span style="--i:2">now</span> <span style="--i:3">showing</span><span style="--i:4">.</span></span></h1>
   </div>
 </div>
 
 <div class="vig" aria-hidden="true"></div>
 
-<div id="grid" aria-label="All photographs"><div class="rows" id="gridRows"></div></div>
+<div id="grid" aria-label="All stills"><div class="rows" id="gridRows"></div></div>
 
 <header class="chrome">
-  <a class="wordmark" href="#" aria-label="Ethan Vale">Ethan<em>Vale</em></a>
+  <a class="wordmark" href="#" aria-label="Forest Cinema, Madhuban">Forest<em>Cinema</em></a>
   <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="menu" aria-label="Open menu">
     <span class="menu-label">Menu</span>
     <span class="bars"><i></i><i></i></span>
@@ -472,13 +472,13 @@ body.lit #lit{opacity:1;pointer-events:auto}
 
 <aside class="bio chrome">
   <div class="who">
-    <img id="avatar" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260922_194417_a455843c-d8db-461c-8ef6-74a325d2472c_min.webp" alt="Ethan Vale" width="52" height="52">
-    <b>Ethan Vale</b>
+    <img id="avatar" src="media/og-portrait.jpg" alt="Forest Cinema, Madhuban" width="52" height="52">
+    <b>Forest Cinema</b>
   </div>
-  <p>Wildlife photography is less about taking pictures and more about learning when not to move. Every frame in this archive was captured in natural conditions without intervention.</p>
+  <p>A single-screen hall in Madhuban, Bihar. One projector, one curtain, one house. Holocaust is showing across three shows daily — morning, afternoon and the evening full house. Every still in this archive was pulled from our own screen.</p>
 </aside>
 
-<div class="colophon chrome">Field Notes 2026</div>
+<div class="colophon chrome">Madhuban · Bihar · Screen 1</div>
 
 <button class="gridbtn" id="gridBtn" type="button" aria-label="Toggle grid view"><b></b><b></b><b></b><b></b></button>
 
@@ -486,12 +486,12 @@ body.lit #lit{opacity:1;pointer-events:auto}
 
 <div id="menu" aria-hidden="true">
   <nav>
-    <a href="#" data-grid>The Archive</a>
-    <a href="#" data-close-menu>Field Notes</a>
-    <a href="#" data-close-menu>Studio</a>
-    <a href="#" data-close-menu>Contact</a>
+    <a href="#" data-grid>The Stills</a>
+    <a href="#" data-close-menu>Holocaust</a>
+    <a href="#" data-close-menu>The Hall</a>
+    <a href="#" data-close-menu>Box Office</a>
   </nav>
-  <div class="addr">Nairobi · Cape Town · Reykjavík<br>studio@ethanvale.photo</div>
+  <div class="addr">Forest Cinema · Station Road, Madhuban, Bihar 848202<br>Shows 10:00 AM · 2:30 PM · 7:00 PM &nbsp;|&nbsp; Box office opens 9:00 AM<br>bookings@forestcinema.in</div>
 </div>
 
 <div id="lit" aria-hidden="true">
@@ -514,15 +514,15 @@ body.lit #lit{opacity:1;pointer-events:auto}
 <div id="intro">
   <div class="fallback" aria-hidden="true"></div>
   <video id="film" muted playsinline autoplay preload="auto" disablepictureinpicture
-    src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260922_195107_ed3f055a-3a13-4a71-b743-e10310454246.mp4"></video>
+    src="media/video/katana.mp4"></video>
   <div class="veil" aria-hidden="true"></div>
   <button class="skip" id="skip" type="button">Skip</button>
 </div>
 
 <div id="splash">
-  <div class="mark">Ethan<em>Vale</em></div>
+  <div class="mark">Forest<em>Cinema</em></div>
   <div class="bar"><s id="bar"></s></div>
-  <div class="tag">Field Notes 2026</div>
+  <div class="tag">Holocaust · Now Showing</div>
 </div>
 
 <div id="dot" aria-hidden="true"></div>
@@ -531,31 +531,27 @@ body.lit #lit{opacity:1;pointer-events:auto}
 (function () {
   'use strict';
 
-  var CDN = 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/';
-  var AVATAR_ID = 'hf_20260922_194417_a455843c-d8db-461c-8ef6-74a325d2472c';
+  var CDN = 'media/';
+  var AVATAR_ID = 'og-portrait.jpg';
 
   var SHOTS = [
-    { id:'hf_20260922_194349_26ffdbfd-ac5e-49e9-a07d-c06d3f7cb4cb', title:'Before the Dust Settled', place:'South Africa · Limpopo Province', note:'Wildlife photography is rarely about pressing the shutter. Most of the work happens earlier — waiting, staying still, and accepting that nature decides if the frame exists. This encounter lasted less than a minute.' },
-    { id:'hf_20260922_194350_5546ea3d-6336-42c7-a59f-06165c5802be', title:'The Long Walk Home', place:'Kenya · Maasai Mara', note:'A matriarch leading her herd across open grass at the end of the day. I stayed low and let them close the distance on their own terms.' },
-    { id:'hf_20260922_194349_b4533691-cb49-41d4-b56c-51f0fdcbe250', title:'Something Understood', place:'Botswana · Okavango Delta', note:'He held the look for about four seconds. Long enough to be certain neither of us intended to move first.' },
-    { id:'hf_20260922_194349_e588abd3-1bfa-4918-894f-05632cc51ccc', title:'Nine Hours of Nothing', place:'Finland · Lapland', note:'A full day in a hide for a single turn of the head. That ratio is normal and I have stopped resenting it.' },
-    { id:'hf_20260922_194350_28d92c80-de66-41cb-911e-b3b44aebe1f5', title:'Borrowed Trust', place:'Scotland · Cairngorms', note:'She had learned the shape of a person and decided it was uninteresting. That indifference is the rarest thing in this work.' },
-    { id:'hf_20260922_194349_04e89718-4214-4aff-bac5-490462bbfe2f', title:'Small Weather', place:'Costa Rica · Osa Peninsula', note:'Rain had just stopped. Everything on that branch was the size of a thumbnail and lit like a stage.' },
-    { id:'hf_20260922_194417_2c031e22-2fad-4c81-a544-83cd6bba1c33', title:'Against the Weather', place:'Alaska · Chilkat Valley', note:'Shot at a thousandth of a second into a rising storm. The light lasted eleven minutes.' },
-    { id:'hf_20260922_194349_a39c3226-7848-4b15-b840-98ad8aec467b', title:'The Pale Edge', place:'India · Bandhavgarh', note:'Almost entirely hidden. I only found the frame because the foliage stopped moving in the wrong place.' },
-    { id:'hf_20260922_194417_555e4d90-f35f-4a1a-8c75-def1e8b71988', title:'Perfect Arithmetic', place:'Indonesia · Raja Ampat', note:'Coiled with a precision that looks designed. Nothing about it is — it is just the cheapest way to hold heat.' },
-    { id:'hf_20260922_194417_e525a243-03c8-454b-83b4-60f541baf70a', title:'Shallow Water', place:'French Polynesia · Fakarava', note:'Three metres down on a single breath. It passed close enough that I stopped composing and simply held the camera still.' },
-    { id:'hf_20260922_194349_ec830e6f-b8e6-4569-8540-ee7f33902c53', title:'Two of Nine', place:'India · Ranthambore', note:'Siblings resting out the afternoon heat. The second one never opened its eyes.' },
-    { id:'hf_20260922_194417_35a9af5f-bd07-45a7-bb73-08b47d19d530', title:'Low Ground', place:'Nepal · Chitwan', note:'Flat on the ground at her eye level, which is the only honest angle for an animal that hunts from there.' },
-    { id:'hf_20260922_194416_30e307a9-1265-45c3-a1a0-5c6fa5bb9f8d', title:'Everything at Once', place:'Iceland · Southern Coast', note:'Free horses on a black beach at dusk. I panned and accepted whatever the frame gave back.' },
-    { id:'hf_20260922_194417_ff5cb9f8-8eed-4bfb-bb08-11256da92eae', title:'White on White', place:'Canada · Ellesmere Island', note:'Snow removes every reference for exposure. The only reliable meter left is the eyes.' },
-    { id:'hf_20260922_194418_1d9bff4a-4971-4944-9e49-d72e755ceeb0', title:'Census', place:'Namibia · Etosha', note:'Two of roughly sixteen thousand left. The number is the reason the frame exists.' },
-    { id:'hf_20260922_194349_75e53821-0807-4ebc-992d-34bae0ec2ce6', title:'The Whole Field', place:'France · Provence', note:'Four millimetres of animal. At this magnification a breath of wind is an earthquake.' },
-    { id:'hf_20260922_194417_5a227847-3796-4438-805d-7e66e9538205', title:'First Season', place:'Germany · Bavarian Forest', note:'Days old and already still enough to disappear. Stillness is the first thing anything here learns.' },
-    { id:'hf_20260922_194350_b49aa67e-0401-4029-af4f-f6ac3ee83398', title:'Listening Posture', place:'Tanzania · Serengeti', note:'Ears forward, weight on the back legs. She heard something I never did.' },
-    { id:'hf_20260922_194349_89b82779-3a46-4c55-b7c5-f4a0fd955874', title:'A Line of Red', place:'Spain · Fuente de Piedra', note:'Underexposed by two stops until only the shape survived.' },
-    { id:'hf_20260922_194416_47e18c62-253a-42e1-97a9-9e5f6a6b8d59', title:'Left Behind', place:'Studio · Reykjavík', note:'Found beneath a roost at first light. The only frame in this archive an animal agreed to in advance.', tall:true },
-    { id:AVATAR_ID, title:'The Other Side', place:'Uganda · Kibale Forest', note:'Taken by a colleague between two long waits. Proof, mostly, that someone is holding the camera.' }
+    { id:'og-dual-guns.jpg', title:'The Calm Ends Here', place:'FIRESTORM · MUSIC BY THAMAN S', note:'Red dual-gun action, no poster text. The calm ends here — and this is the frame the house answers to.' },
+    { id:'OG007.webp', title:'Pistol In Blue Rain', place:'THEY CALL HIM OG · THE OFFICIAL TRAILER', note:'Pawan Kalyan. Emraan Hashmi. A film by Sujeeth. The rain sat on that frame longer than the shot itself.', tall:true },
+    { id:'OG015.webp', title:'The Man Behind The Name', place:'OJAS GAMBHEERA · 01 — THE RETURN', note:'Holding the katana against a red wall. The man. The myth. The storm.' },
+    { id:'OG009.webp', title:'Close-Up Eyes', place:'A WORLD IN FRAGMENTS', note:'Extreme face closeup. At this throw distance you stop composing and simply hold the frame still.', tall:true },
+    { id:'OG002.jpg', title:'Flaming Chair, Wordless', place:'THE SOUND OF OG · DVV ENTERTAINMENT', note:'Beside the flaming chair. Some storms never leave. They wait.', tall:true },
+    { id:'og-truck.jpg', title:'Bombay Architecture', place:'THE OFFICIAL TRAILER · DVV ENTERTAINMENT', note:'On the Dodge, Bombay architecture, no poster text. The trailer ends here and the hall gets up.' },
+    { id:'OG008.webp', title:'Foot On The Flaming Railing', place:'THE FIRST GLIMPSE · POWER STAR PAWAN KALYAN', note:'Foot on the flaming railing with the sword, wordless. And then, there was OG.', tall:true },
+    { id:'OG011.webp', title:'The First Glimpse', place:'HUNGRY CHEETAH · A SUJEETH FILM', note:'A silence. A silhouette. A name that needs no introduction. The katana entrance we run cold, before the lights go down.' },
+    { id:'OG013.webp', title:'Welding Amid Sparks', place:'A WORLD IN FRAGMENTS · THE FILMS, THE SOUND, THE RETURN', note:'Welding amid sparks, wordless. Nine seconds of light; the interval bell does not wait for either of us.', tall:true },
+    { id:'OG016.jpg', title:'Red Silhouette', place:'SCROLL TO ENTER HIS WORLD', note:'Red silhouette, wordless. The last frame before the title card takes the screen.', tall:true },
+    { id:'og-portrait.jpg', title:'A Name Buried In Silence', place:'PAWAN KALYAN IN · THEY CALL HIM OG', note:'Seated in a dark room, sunglasses on. A name buried in silence. A storm that never died.' },
+    { id:'og-title-original.webp', title:'The Title Card', place:'THEY CALL HIM OG · TITLE ARTWORK', note:'The brush title artwork itself — THEY CALL HIM, the star name and the credits. It comes up first and holds until the projector takes over.' },
+    { id:'poster-4.jpg', title:'Silence Has An Expiry Date', place:'HIS WORLD · A WORLD OF SHADOWS', note:'A world of shadows. A name that echoes through it. Poster artwork as printed, cropped to our panel.', tall:true },
+    { id:'poster-6.jpg', title:'Seated By The Flaming Chair', place:'THE OG ARCHIVE · THREE WAYS INTO HIS WORLD', note:'Seated by the flaming chair, wordless. Quiet menace. Unmistakable power. One original.', tall:true },
+    { id:'poster-9.jpg', title:'Above The Flaming Katana', place:'THEY CALL HIM OG · EXTREME CLOSEUP', note:'Extreme eye closeup above the flaming katana. Only the middle of the sheet is used; the rest is poster text.', tall:true },
+    { id:'omi.jpg', title:'Before The Flames', place:'THE RETURN OF OJAS GAMBHEERA', note:'Omi walking before flames, no poster text. This one stays on the lobby panel all week.' },
+    { id:'yt-0.jpg', title:'Watch The Trailer', place:'OFFICIAL TRAILER · AN INDEPENDENT FAN EXPERIENCE', note:'The trailer frame as it is served. Film and music belong to their respective owners.' }
   ];
 
   var root = document.documentElement;
@@ -604,7 +600,7 @@ body.lit #lit{opacity:1;pointer-events:auto}
 
   var cards = [];
   var gridFigs = [];
-  var decodedSrc = SHOTS.map(function (s) { return CDN + s.id + '_min.webp'; });
+  var decodedSrc = SHOTS.map(function (s) { return CDN + s.id; });
 
   SHOTS.forEach(function (s, idx) {
     var card = document.createElement('div');
@@ -857,7 +853,7 @@ body.lit #lit{opacity:1;pointer-events:auto}
         });
       };
       probe.onerror = function () { finish(null); };
-      probe.src = CDN + s.id + '_min.webp';
+      probe.src = CDN + s.id;
     });
   }
 
@@ -868,7 +864,7 @@ body.lit #lit{opacity:1;pointer-events:auto}
     probe.onload = function () {
       downscale(probe, 160).then(function (src) { if (src) avatarImg.src = src; });
     };
-    probe.src = CDN + AVATAR_ID + '_min.webp';
+    probe.src = CDN + AVATAR_ID;
   })();
 
   /* film counts as one asset once it can play (or fails) */
@@ -1037,7 +1033,7 @@ body.lit #lit{opacity:1;pointer-events:auto}
     full.onload = function () {
       if (token === openToken && focused === idx) litImg.src = full.src;
     };
-    full.src = CDN + s.id + '.png';
+    full.src = CDN + s.id;
 
     /* FLIP from the clicked card/figure to center */
     if (sourceEl) {
