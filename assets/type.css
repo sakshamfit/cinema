@@ -92,7 +92,7 @@ h1, h2, h3 { font-weight: 520; }
 
 /* ---------- data: aligned figures, readable rows ---------- */
 .hall-facts > li { font-size: 12.5px; letter-spacing: .05em; padding: 21px 22px; font-variant-numeric: tabular-nums; }
-.hall-facts > li > span { color: #a8a29b; font-weight: 500; }
+.hall-facts > li > span, .hall-facts > li > span:first-child { color: #a8a29b; font-weight: 500; }   /* the source rule is :first-child, which outranks a plain child selector */
 .hall-facts > li > b { color: #efe9e2; font-weight: 470; }
 .schedule > div { font-size: 11.5px; letter-spacing: .05em; font-variant-numeric: tabular-nums; font-weight: 450; }
 .schedule .day { font-size: 11.5px; letter-spacing: .13em; color: #a8a29b; font-weight: 540; }
