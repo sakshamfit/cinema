@@ -69,8 +69,8 @@
     ['Do you sell tickets online?', 'No. The window is the counter and the counter is the window: cash, this show, no seat numbers. The moment that changes, this page says so first.'],
     ['Can I pick my seat?', 'There is no picking. Stall or balcony, first come. If you want the middle of the stall on the 7:00 PM, be here an hour early — ten minutes is not early.'],
     ['Can we carry food in?', 'Outside food stays outside. The counter sells packets and water and it is open the whole show; the 2:30 house buys before the doors open, the 7:00 house buys at interval.'],
-    ['Is there a 3D show?', 'No. One screen, 2D, one projector, and a lamp we keep honest. Two shows a day is not a house that cuts corners on glass.'],
-    ['Children?', 'The certificate is U/A. Children may attend with an adult; the 10:00 AM house is the one families take and it is the cheapest in the week.'],
+    ['Is there a 3D show?', 'No. One screen, 2D, one projector — and a lamp we keep honest is not a house that cuts corners on glass.'],
+    ['Children?', 'The certificate is U/A. Children may attend with an adult; the 10:00 AM house is the one families take, and on a Tuesday it is the cheapest ticket in the week.'],
     ['Wheelchair access?', 'Ramp at the counter, one bay in row K of the stall with a companion seat beside it. Say it at the window and the aisle stays clear for you.'],
     ['What if my phone rings?', 'Someone will ask you to put it face down. The show does not stop for anyone, and the balcony will let you know what it thinks.'],
     ['What about the last show?', 'Doors at 6:40, projector at 7:00, house out by ten. The shutter comes down on the hour and the marquee light goes with it.']
