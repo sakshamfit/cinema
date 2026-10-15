@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Forest Cinema, Madhuban — Holocaust · Now Showing</title>
+<meta name="description" content="Forest Cinema, Madhuban, Bihar — a single-screen house. The still archive for the current show, Holocaust, screened from our stall.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#000;
+  --ink:#f4f2ef;
+  --dim:#8c8783;
+  --line:rgba(244,242,239,.28);
+  --pad:clamp(14px, 2.6vw, 34px);
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --hw:min(56vw, 640px);
+  --persp:1150px;
+  --safe-top:env(safe-area-inset-top, 0px);
+  --safe-right:env(safe-area-inset-right, 0px);
+  --safe-bottom:env(safe-area-inset-bottom, 0px);
+  --safe-left:env(safe-area-inset-left, 0px);
+  --tap:44px;
+  --serif:"Playfair Display", "Times New Roman", serif;
+  --sans:"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+}
+*{box-sizing:border-box}
+html{background:#000;scrollbar-gutter:stable}
+body{
+  margin:0;background:#000;color:var(--ink);
+  font-family:var(--sans);font-weight:300;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  overflow-x:hidden;min-height:100vh;min-height:100dvh;
+  overscroll-behavior-y:none;
+}
+body.locked{overflow:hidden;height:100vh;height:100dvh}
+img{display:block;max-width:100%}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+a{-webkit-tap-highlight-color:transparent}
+
+/* ---------- scroll track ---------- */
+#scrolltrack{height:116vh;pointer-events:none}
+
+/* ---------- stage / world ---------- */
+#stage{
+  position:fixed;inset:0;z-index:10;
+  perspective:var(--persp);perspective-origin:50% 50%;
+  overflow:hidden;touch-action:none;
+  transition:opacity .6s var(--ease), filter .6s var(--ease);
+}
+@media (pointer:coarse){ #stage{touch-action:pan-y} }
+body.gridview #stage{opacity:0;filter:blur(14px);pointer-events:none}
+#world{
+  position:absolute; top:50%; left:50%;
+  width:0; height:0;
+  transform-style:preserve-3d;
+  will-change:transform;
+}
+#orb{
+  position:absolute; top:0; left:0;
+  width:0; height:0;
+  transform-style:preserve-3d;
+  opacity:1;
+  transform:none;
+}
+#headline{
+  position:absolute; top:0; left:0;
+  width:var(--hw);
+  margin-left:calc(var(--hw) / -2);
+  text-align:center;
+  font-family:var(--serif);
+  font-weight:400;
+  font-size:clamp(25px, 3.7vw, 55px);
+  line-height:1.06;
+  letter-spacing:-.005em;
+  color:#fff;
+  text-shadow:0 2px 34px rgba(0,0,0,.55);
+  pointer-events:none;
+  user-select:none;
+  -webkit-user-select:none;
+}
+#headline .inner{
+  position:absolute; top:0; left:0;
+  width:100%;
+  transform:translateY(-50%);
+}
+#headline .inner span{
+  display:inline-block;
+  opacity:0;transform:translateY(.42em);filter:blur(7px);
+}
+body.revealed #headline .inner span{
+  opacity:1;transform:none;filter:blur(0);
+  transition:opacity 1.05s var(--ease), transform 1.15s var(--ease), filter 1.05s var(--ease);
+  transition-delay:calc(.9s + var(--i) * .085s);
+}
+
+/* ---------- cards ---------- */
+.card{
+  position:absolute;top:0;left:0;
+  width:var(--cw,180px);height:calc(var(--cw,180px) / 1.5);
+  margin-left:calc(var(--cw,180px) / -2);margin-top:calc(var(--cw,180px) / -3);
+  cursor:pointer;will-change:transform,opacity;
+}
+.card.tall{height:calc(var(--cw,180px) * 1.25);margin-top:calc(var(--cw,180px) * -0.625)}
+.card figure{
+  position:relative;margin:0;width:100%;height:100%;
+  overflow:hidden;border-radius:3px;background:#0a0a0a;
+  transition:transform .5s var(--ease);
+}
+.card:hover figure{transform:scale(1.045)}
+.card figure img{width:100%;height:100%;object-fit:cover;opacity:0}
+.card figure img.in{opacity:1}
+body.revealed .card figure img{transition:opacity .8s ease-out}
+.card figure::after{
+  content:'';position:absolute;inset:0;border-radius:3px;pointer-events:none;
+  background:rgba(0,0,0,var(--d,0));
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.07);
+}
+
+/* ---------- vignette ---------- */
+.vig{
+  position:fixed;inset:0;z-index:12;pointer-events:none;
+  background:radial-gradient(ellipse 88% 92% at 50% 50%, transparent 48%, rgba(0,0,0,.26) 80%, rgba(0,0,0,.72) 100%);
+  transition:opacity .6s var(--ease);
+}
+body.gridview .vig, body.lit .vig{opacity:0}
+
+/* ---------- grid ---------- */
+#grid{
+  position:fixed;inset:0;z-index:20;overflow-y:auto;
+  padding:calc(var(--pad)*3.4) var(--pad) calc(var(--pad)*4);
+  background:#000;opacity:0;pointer-events:none;transition:opacity .6s var(--ease);
+}
+body.gridview #grid{opacity:1;pointer-events:auto}
+#grid .rows{
+  display:grid;grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));
+  gap:clamp(10px, 1.4vw, 20px);max-width:1680px;margin:0 auto;
+}
+#grid figure{
+  position:relative;margin:0;aspect-ratio:3/2;border-radius:3px;background:#0b0b0b;
+  overflow:hidden;cursor:pointer;
+}
+#grid figure img{width:100%;height:100%;object-fit:cover;opacity:.82;transition:transform .8s var(--ease), opacity .8s var(--ease)}
+#grid figure:hover img{transform:scale(1.05);opacity:1}
+#grid figcaption{
+  position:absolute;left:0;right:0;bottom:0;
+  font-family:var(--serif);font-weight:400;font-size:15px;color:var(--ink);
+  background:linear-gradient(to bottom, transparent, rgba(0,0,0,.82));
+  padding:26px 14px 12px;opacity:0;transform:translateY(6px);
+  transition:opacity .45s var(--ease), transform .45s var(--ease);
+}
+#grid figure:hover figcaption{opacity:1;transform:none}
+
+/* ---------- chrome ---------- */
+.chrome{opacity:0;transition:opacity 1.2s var(--ease) .15s}
+body.revealed .chrome{opacity:1}
+header.chrome{
+  position:fixed;top:0;left:0;right:0;z-index:60;
+  display:flex;justify-content:space-between;align-items:flex-start;
+  padding-top:calc(var(--pad) * .8 + var(--safe-top));
+  padding-right:calc(var(--pad) + var(--safe-right));
+  padding-bottom:calc(var(--pad) * .35);
+  padding-left:calc(var(--pad) + var(--safe-left));
+  mix-blend-mode:difference;
+}
+body.menuopen header.chrome{z-index:90;mix-blend-mode:normal}
+.wordmark{
+  font-family:var(--serif);font-weight:400;
+  font-size:clamp(19px, 2.1vw, 27px);letter-spacing:.005em;line-height:1;
+  color:#fff;text-decoration:none;white-space:nowrap;
+}
+.wordmark em{font-style:normal}
+body.menuopen .wordmark{color:var(--ink)}
+.menu-btn{
+  display:flex;flex-direction:column;align-items:flex-end;gap:5px;
+  min-width:var(--tap);min-height:var(--tap);padding:8px 0 4px;
+}
+.menu-label{
+  font-size:clamp(12px, 1.25vw, 15px);letter-spacing:.01em;color:#fff;
+  transition:opacity .35s var(--ease);
+}
+body.menuopen .menu-label{opacity:0}
+.bars{position:relative;width:clamp(42px, 4.4vw, 62px);height:clamp(16px, 2vw, 22px);display:block}
+.bars i{
+  position:absolute;left:0;right:0;top:50%;height:1px;background:#fff;display:block;
+  transition:transform .45s var(--ease), width .45s var(--ease), background .3s;
+}
+.bars i:first-child{transform:translateY(-5px)}
+.bars i:last-child{width:clamp(34px, 3.6vw, 50px);left:auto;transform:translateY(5px)}
+.menu-btn:hover .bars i:last-child{transform:translateY(5px) translateX(-8px)}
+body.menuopen .bars i{background:var(--ink);width:100%}
+body.menuopen .bars i:first-child{transform:translateY(0) rotate(45deg)}
+body.menuopen .bars i:last-child{left:0;transform:translateY(0) rotate(-45deg)}
+body.menuopen .menu-btn:hover .bars i:last-child{transform:translateY(0) rotate(-45deg)}
+
+/* ---------- bio ---------- */
+.bio{
+  position:fixed;left:calc(var(--pad) + var(--safe-left));bottom:calc(var(--pad) + var(--safe-bottom));
+  z-index:55;max-width:min(320px, 46vw);
+  transition:opacity .6s var(--ease), transform .6s var(--ease);
+}
+.bio .who{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+#avatar{width:52px;height:52px;border-radius:3px;object-fit:cover;filter:grayscale(.15)}
+.bio .who b{font-family:var(--serif);font-weight:400;font-size:19px;letter-spacing:.01em}
+.bio p{margin:0;font-size:12.5px;line-height:1.62;color:rgba(244,242,239,.72)}
+body.deep .bio, body.gridview .bio, body.lit .bio{opacity:0;transform:translateY(10px);pointer-events:none}
+
+/* ---------- colophon ---------- */
+.colophon{
+  position:fixed;right:calc(var(--pad) + var(--safe-right));bottom:calc(var(--pad) + var(--safe-bottom));
+  z-index:55;font-size:12.5px;color:rgba(244,242,239,.72);
+  transition:opacity .6s var(--ease);
+}
+body.gridview .colophon, body.lit .colophon{opacity:0;pointer-events:none}
+
+/* ---------- grid button ---------- */
+.gridbtn{
+  position:fixed;left:calc(var(--pad) + var(--safe-left));bottom:calc(var(--pad) + var(--safe-bottom));
+  z-index:56;width:var(--tap);height:var(--tap);padding:5px;
+  display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:4px;
+  opacity:0;transform:translateY(8px);pointer-events:none;
+  transition:opacity .6s var(--ease), transform .6s var(--ease);
+}
+body.deep .gridbtn, body.gridview .gridbtn{opacity:1;transform:none;pointer-events:auto}
+.gridbtn b{background:var(--ink);border-radius:2px;transition:transform .4s var(--ease), background .3s;display:block}
+.gridbtn:hover b{background:#fff;transform:scale(.86)}
+.gridbtn b:nth-child(1), .gridbtn:hover b:nth-child(1){transform:none}
+.gridbtn:hover b:nth-child(1){transform:scale(.86)}
+body.gridview .gridbtn b:nth-child(1){transform:translate(3px, 3px)}
+body.gridview .gridbtn b:nth-child(4){transform:translate(-3px, -3px)}
+body.gridview .gridbtn:hover b{transform:scale(.86)}
+body.gridview .gridbtn:hover b:nth-child(1){transform:translate(3px, 3px) scale(.86)}
+body.gridview .gridbtn:hover b:nth-child(4){transform:translate(-3px, -3px) scale(.86)}
+body.deep .bio ~ .gridbtn{left:calc(var(--pad) + var(--safe-left))}
+
+/* when deep, bio hides so grid button takes its slot naturally (same corner) */
+
+/* ---------- scroll cue ---------- */
+.cue{
+  position:fixed;left:50%;bottom:calc(var(--pad) + var(--safe-bottom) + 4px);
+  transform:translateX(-50%);z-index:54;
+  display:flex;align-items:center;gap:10px;
+  font-size:10px;letter-spacing:.24em;text-transform:uppercase;
+  color:rgba(244,242,239,.42);white-space:nowrap;
+  transition:opacity .6s var(--ease);
+}
+.cue s{
+  position:relative;width:44px;height:1px;background:rgba(244,242,239,.28);
+  overflow:hidden;text-decoration:none;display:block;
+}
+.cue s::after{
+  content:'';position:absolute;inset:0;background:#f4f2ef;
+  transform:translateX(-100%);
+  animation:sweep 2.6s var(--ease) infinite;
+}
+@keyframes sweep{
+  0%{transform:translateX(-100%)}
+  55%{transform:translateX(0)}
+  100%{transform:translateX(100%)}
+}
+body.deep .cue, body.gridview .cue, body.lit .cue{opacity:0;pointer-events:none}
+
+/* ---------- menu ---------- */
+#menu{
+  position:fixed;inset:0;z-index:80;background:#050505;
+  display:grid;place-items:center;
+  clip-path:inset(0 0 100% 0);pointer-events:none;
+  transition:clip-path .85s var(--ease);
+}
+#menu.open{clip-path:inset(0);pointer-events:auto}
+#menu nav{display:flex;flex-direction:column;gap:clamp(4px, 1vw, 10px);text-align:center}
+#menu nav a{
+  font-family:var(--serif);font-weight:400;
+  font-size:clamp(34px, 7.6vw, 78px);line-height:1.08;
+  color:var(--ink);text-decoration:none;opacity:.55;
+  transition:opacity .35s var(--ease), letter-spacing .35s var(--ease);
+}
+#menu nav a:hover{opacity:1;letter-spacing:.012em}
+#menu .addr{
+  position:absolute;
+  left:calc(var(--pad) + var(--safe-left));right:calc(var(--pad) + var(--safe-right));
+  bottom:calc(var(--pad) + var(--safe-bottom));
+  text-align:center;font-size:12.5px;color:var(--dim);line-height:1.7;
+}
+
+/* ---------- lightbox ---------- */
+#lit{
+  position:fixed;inset:0;z-index:90;
+  display:grid;place-items:center;
+  padding:clamp(56px, 8vh, 84px) var(--pad);
+  opacity:0;pointer-events:none;transition:opacity .42s var(--ease);
+}
+body.lit #lit{opacity:1;pointer-events:auto}
+#lit .scrim{position:absolute;inset:0}
+.plate{
+  position:relative;width:min(72vw, 860px, (100vh - 230px) * 1.5);
+  transition:transform .62s var(--ease), opacity .42s var(--ease);
+}
+.shot{
+  position:relative;width:100%;aspect-ratio:3/2;border-radius:2px;background:#0b0b0b;
+  box-shadow:0 30px 90px rgba(0,0,0,.75);
+}
+.shot img{width:100%;height:100%;object-fit:cover;border-radius:2px}
+.shot [data-close]{
+  position:absolute;top:12px;right:14px;z-index:2;
+  font-size:12.5px;min-width:var(--tap);min-height:var(--tap);
+  padding:10px 14px;border:1px solid rgba(244,242,239,.78);border-radius:6px;
+  background:rgba(0,0,0,.35);color:var(--ink);
+  transition:border-color .3s, background .3s;
+}
+.shot [data-close]:hover{border-color:#fff;background:rgba(0,0,0,.55)}
+.meta{
+  display:grid;grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr);
+  gap:clamp(22px, 3.2vw, 48px);padding-top:16px;
+}
+#litTitle{
+  font-family:var(--serif);font-weight:400;
+  font-size:clamp(22px, 2.15vw, 32px);line-height:1.08;letter-spacing:-.01em;
+  margin:0 0 6px;
+}
+#litWhere{font-size:13px;color:rgba(244,242,239,.62)}
+#litNote{margin:0;font-size:13.5px;line-height:1.55;color:rgba(244,242,239,.92)}
+
+/* ---------- intro ---------- */
+#intro{
+  position:fixed;inset:0;z-index:200;background:#000;
+  display:grid;place-items:center;overflow:hidden;
+}
+#intro .fallback{
+  position:absolute;inset:0;opacity:0;
+  background:radial-gradient(circle at 50% 46%, #14301a 0%, #060c07 42%, #000 72%);
+}
+#intro.novideo .fallback{opacity:1}
+#film{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#intro .veil{position:absolute;inset:0;background:#000;opacity:0;transition:opacity 1.15s ease;pointer-events:none}
+#intro.closing .veil{opacity:1}
+#intro.gone{opacity:0;pointer-events:none;transition:opacity .5s linear}
+.skip{
+  position:absolute;z-index:3;
+  right:calc(var(--pad) + var(--safe-right));bottom:calc(var(--pad) + var(--safe-bottom));
+  font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(244,242,239,.6);min-height:var(--tap);padding:10px 18px;
+  border:1px solid rgba(244,242,239,.25);border-radius:999px;
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  transition:color .3s, border-color .3s, opacity .4s;
+}
+.skip:hover{color:#fff;border-color:rgba(255,255,255,.7)}
+#intro.closing .skip{opacity:0;pointer-events:none}
+
+/* ---------- splash ---------- */
+#splash{
+  position:fixed;inset:0;z-index:250;background:#000;
+  display:grid;place-items:center;align-content:center;gap:26px;
+  transition:opacity .6s ease;
+}
+#splash.out{opacity:0;pointer-events:none}
+#splash .mark{
+  font-family:var(--serif);font-weight:400;
+  font-size:clamp(28px, 4.4vw, 52px);letter-spacing:.005em;color:#f4f2ef;
+  opacity:0;animation:riseIn 1.25s ease .15s forwards;
+}
+#splash .mark em{font-style:normal}
+#splash .bar{
+  width:clamp(120px, 17vw, 210px);height:1px;background:rgba(244,242,239,.16);
+}
+#splash .bar s{
+  display:block;width:100%;height:100%;background:#f4f2ef;text-decoration:none;
+  transform:scaleX(0);transform-origin:left center;transition:transform .55s ease;
+}
+#splash .tag{
+  font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:rgba(244,242,239,.38);
+  opacity:0;animation:riseIn .9s ease .7s forwards;
+}
+@keyframes riseIn{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
+
+/* ---------- cursor ---------- */
+#dot{
+  position:fixed;left:0;top:0;z-index:300;
+  width:19px;height:19px;margin:-9.5px 0 0 -9.5px;border-radius:50%;
+  background:rgba(214,212,209,.9);mix-blend-mode:difference;
+  border:1px solid transparent;pointer-events:none;
+  transition:width .35s var(--ease), height .35s var(--ease), margin .35s var(--ease), background .35s var(--ease), border-color .35s var(--ease);
+}
+#dot.wide{
+  width:52px;height:52px;margin:-26px 0 0 -26px;
+  background:rgba(244,242,239,.14);border-color:rgba(244,242,239,.75);
+}
+@media (hover:none), (pointer:coarse){ #dot{display:none} }
+
+/* ---------- responsive ---------- */
+@media (max-width:900px){
+  .bio{max-width:min(420px, calc(100vw - var(--pad) * 2 - var(--safe-left) - var(--safe-right)))}
+  .bio p{font-size:12px}
+  .colophon{font-size:11px}
+  .meta{grid-template-columns:1fr;gap:10px;padding-top:14px}
+  .plate{width:min(92vw, (100dvh - 220px) * 1.5)}
+  #grid .rows{grid-template-columns:repeat(auto-fill, minmax(150px, 1fr))}
+  #grid{padding-top:calc(var(--pad) * 2.8 + var(--safe-top))}
+}
+@media (max-width:768px){
+  .colophon{display:none}
+  .bio{max-width:calc(100vw - var(--pad) * 2 - var(--safe-left) - var(--safe-right))}
+  #headline{font-size:clamp(22px, 6.4vw, 34px)}
+  #menu nav a{font-size:clamp(28px, 9vw, 54px)}
+  #menu .addr{font-size:11.5px}
+}
+@media (max-width:640px){
+  :root{--hw:min(84vw, 360px);--pad:clamp(12px, 4vw, 18px)}
+  #avatar{width:42px;height:42px}
+  .bio .who b{font-size:17px}
+  .bio p{font-size:11.5px;line-height:1.55}
+  .cue{display:none}
+  #lit{display:block;overflow-y:auto;padding:calc(52px + var(--safe-top)) calc(var(--pad) + var(--safe-right)) calc(var(--pad) + var(--safe-bottom)) calc(var(--pad) + var(--safe-left))}
+  .plate{width:100%;max-width:560px;margin:0 auto}
+  #litTitle{font-size:clamp(20px, 5.6vw, 26px)}
+  #litNote{font-size:12.5px;line-height:1.58}
+  .shot [data-close]{top:8px;right:8px}
+  #grid .rows{grid-template-columns:repeat(2, 1fr);gap:8px}
+  #grid figcaption{opacity:1;transform:none;font-size:13px}
+  #grid{
+    padding-top:calc(var(--pad) * 2.8 + var(--safe-top));
+    padding-right:calc(var(--pad) + var(--safe-right));
+    padding-bottom:calc(var(--pad) * 3 + var(--safe-bottom));
+    padding-left:calc(var(--pad) + var(--safe-left));
+  }
+}
+@media (max-width:380px){
+  :root{--hw:min(88vw, 320px)}
+  .bio .who{gap:10px;margin-bottom:10px}
+  .bio p{display:none}
+  #grid .rows{grid-template-columns:1fr}
+  #menu nav{gap:2px}
+  #menu nav a{font-size:clamp(24px, 10vw, 40px)}
+}
+@media (max-height:520px) and (orientation:landscape){
+  .bio, .colophon, .cue{display:none}
+  #headline{font-size:clamp(18px, 4.8vh, 28px)}
+  #lit{padding-top:calc(36px + var(--safe-top))}
+  .meta{padding-top:10px}
+  .plate{width:min(58vw, (100dvh - 80px) * 1.5)}
+  header.chrome{padding-top:calc(8px + var(--safe-top))}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.14s!important}
+}
+</style>
+</head>
+<body class="locked">
+
+<div id="scrolltrack" aria-hidden="true"></div>
+
+<div id="stage">
+  <div id="world">
+    <div id="orb"></div>
+    <h1 id="headline"><span class="inner"><span style="--i:0">Holocaust</span> <span style="--i:1">is</span> <span style="--i:2">now</span> <span style="--i:3">showing</span><span style="--i:4">.</span></span></h1>
+  </div>
+</div>
+
+<div class="vig" aria-hidden="true"></div>
+
+<div id="grid" aria-label="All stills"><div class="rows" id="gridRows"></div></div>
+
+<header class="chrome">
+  <a class="wordmark" href="#" aria-label="Forest Cinema, Madhuban">Forest<em>Cinema</em></a>
+  <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="menu" aria-label="Open menu">
+    <span class="menu-label">Menu</span>
+    <span class="bars"><i></i><i></i></span>
+  </button>
+</header>
+
+<aside class="bio chrome">
+  <div class="who">
+    <img id="avatar" src="media/og-portrait.jpg" alt="Forest Cinema, Madhuban" width="52" height="52">
+    <b>Forest Cinema</b>
+  </div>
+  <p>A single-screen hall in Madhuban, Bihar. One projector, one curtain, one house. Holocaust is showing across three shows daily — morning, afternoon and the evening full house. Every still in this archive was pulled from our own screen.</p>
+</aside>
+
+<div class="colophon chrome">Madhuban · Bihar · Screen 1</div>
+
+<button class="gridbtn" id="gridBtn" type="button" aria-label="Toggle grid view"><b></b><b></b><b></b><b></b></button>
+
+<div class="cue chrome"><s></s><span>Drag to rotate</span></div>
+
+<div id="menu" aria-hidden="true">
+  <nav>
+    <a href="#" data-grid>The Stills</a>
+    <a href="#" data-close-menu>Holocaust</a>
+    <a href="#" data-close-menu>The Hall</a>
+    <a href="#" data-close-menu>Box Office</a>
+  </nav>
+  <div class="addr">Forest Cinema · Station Road, Madhuban, Bihar 848202<br>Shows 10:00 AM · 2:30 PM · 7:00 PM &nbsp;|&nbsp; Box office opens 9:00 AM<br>bookings@forestcinema.in</div>
+</div>
+
+<div id="lit" aria-hidden="true">
+  <div class="scrim" data-close></div>
+  <div class="plate" id="plate">
+    <div class="shot">
+      <img id="litImg" alt="">
+      <button type="button" data-close>Close</button>
+    </div>
+    <div class="meta">
+      <div>
+        <h2 id="litTitle"></h2>
+        <div class="where" id="litWhere"></div>
+      </div>
+      <p class="note" id="litNote"></p>
+    </div>
+  </div>
+</div>
+
+<div id="intro">
+  <div class="fallback" aria-hidden="true"></div>
+  <video id="film" muted playsinline autoplay preload="auto" disablepictureinpicture
+    src="media/video/katana.mp4"></video>
+  <div class="veil" aria-hidden="true"></div>
+  <button class="skip" id="skip" type="button">Skip</button>
+</div>
+
+<div id="splash">
+  <div class="mark">Forest<em>Cinema</em></div>
+  <div class="bar"><s id="bar"></s></div>
+  <div class="tag">Holocaust · Now Showing</div>
+</div>
+
+<div id="dot" aria-hidden="true"></div>
+
+<script>
+(function () {
+  'use strict';
+
+  var CDN = 'media/';
+  var AVATAR_ID = 'og-portrait.jpg';
+
+  var SHOTS = [
+    { id:'og-dual-guns.jpg', title:'The Calm Ends Here', place:'FIRESTORM · MUSIC BY THAMAN S', note:'Red dual-gun action, no poster text. The calm ends here — and this is the frame the house answers to.' },
+    { id:'OG007.webp', title:'Pistol In Blue Rain', place:'THEY CALL HIM OG · THE OFFICIAL TRAILER', note:'Pawan Kalyan. Emraan Hashmi. A film by Sujeeth. The rain sat on that frame longer than the shot itself.', tall:true },
+    { id:'OG015.webp', title:'The Man Behind The Name', place:'OJAS GAMBHEERA · 01 — THE RETURN', note:'Holding the katana against a red wall. The man. The myth. The storm.' },
+    { id:'OG009.webp', title:'Close-Up Eyes', place:'A WORLD IN FRAGMENTS', note:'Extreme face closeup. At this throw distance you stop composing and simply hold the frame still.', tall:true },
+    { id:'OG002.jpg', title:'Flaming Chair, Wordless', place:'THE SOUND OF OG · DVV ENTERTAINMENT', note:'Beside the flaming chair. Some storms never leave. They wait.', tall:true },
+    { id:'og-truck.jpg', title:'Bombay Architecture', place:'THE OFFICIAL TRAILER · DVV ENTERTAINMENT', note:'On the Dodge, Bombay architecture, no poster text. The trailer ends here and the hall gets up.' },
+    { id:'OG008.webp', title:'Foot On The Flaming Railing', place:'THE FIRST GLIMPSE · POWER STAR PAWAN KALYAN', note:'Foot on the flaming railing with the sword, wordless. And then, there was OG.', tall:true },
+    { id:'OG011.webp', title:'The First Glimpse', place:'HUNGRY CHEETAH · A SUJEETH FILM', note:'A silence. A silhouette. A name that needs no introduction. The katana entrance we run cold, before the lights go down.' },
+    { id:'OG013.webp', title:'Welding Amid Sparks', place:'A WORLD IN FRAGMENTS · THE FILMS, THE SOUND, THE RETURN', note:'Welding amid sparks, wordless. Nine seconds of light; the interval bell does not wait for either of us.', tall:true },
+    { id:'OG016.jpg', title:'Red Silhouette', place:'THEY CALL HIM OG · RED SILHOUETTE', note:'Red silhouette, wordless. The last frame before the title card takes the screen.', tall:true },
+    { id:'og-portrait.jpg', title:'A Name Buried In Silence', place:'PAWAN KALYAN IN · THEY CALL HIM OG', note:'Seated in a dark room, sunglasses on. A name buried in silence. A storm that never died.' },
+    { id:'og-title-original.webp', title:'The Title Card', place:'THEY CALL HIM OG · TITLE ARTWORK', note:'The brush title artwork itself — THEY CALL HIM, the star name and the credits. It comes up first and holds until the projector takes over.' },
+    { id:'poster-4.jpg', title:'Silence Has An Expiry Date', place:'HIS WORLD · A WORLD OF SHADOWS', note:'A world of shadows. A name that echoes through it. Poster artwork as printed, cropped to our panel.', tall:true },
+    { id:'poster-6.jpg', title:'Seated By The Flaming Chair', place:'THE OG ARCHIVE · THREE WAYS INTO HIS WORLD', note:'Seated by the flaming chair, wordless. Quiet menace. Unmistakable power. One original.', tall:true },
+    { id:'poster-9.jpg', title:'Above The Flaming Katana', place:'THEY CALL HIM OG · EXTREME CLOSEUP', note:'Extreme eye closeup above the flaming katana. Only the middle of the sheet is used; the rest is poster text.', tall:true },
+    { id:'omi.jpg', title:'Before The Flames', place:'THE RETURN OF OJAS GAMBHEERA', note:'Omi walking before flames, no poster text. This one stays on the lobby panel all week.' },
+    { id:'yt-0.jpg', title:'Watch The Trailer', place:'OFFICIAL TRAILER · AN INDEPENDENT FAN EXPERIENCE', note:'The trailer frame as it is served. Film and music belong to their respective owners.' }
+  ];
+
+  var root = document.documentElement;
+  var body = document.body;
+  var stage = document.getElementById('stage');
+  var world = document.getElementById('world');
+  var orb = document.getElementById('orb');
+  var headline = document.getElementById('headline');
+  var gridRows = document.getElementById('gridRows');
+  var gridEl = document.getElementById('grid');
+  var splash = document.getElementById('splash');
+  var barEl = document.getElementById('bar');
+  var intro = document.getElementById('intro');
+  var film = document.getElementById('film');
+  var skipBtn = document.getElementById('skip');
+  var menuEl = document.getElementById('menu');
+  var menuBtn = document.getElementById('menuBtn');
+  var gridBtn = document.getElementById('gridBtn');
+  var lit = document.getElementById('lit');
+  var plate = document.getElementById('plate');
+  var litImg = document.getElementById('litImg');
+  var litTitle = document.getElementById('litTitle');
+  var litWhere = document.getElementById('litWhere');
+  var litNote = document.getElementById('litNote');
+  var avatarImg = document.getElementById('avatar');
+  var dot = document.getElementById('dot');
+
+  root.style.overflow = 'hidden';
+
+  /* ================= sphere geometry ================= */
+  var N = SHOTS.length;
+  var GA = Math.PI * (3 - Math.sqrt(5));
+  var vectors = [];
+  for (var i = 0; i < N; i++) {
+    var y = 1 - (i / (N - 1)) * 2;
+    var rad = Math.sqrt(Math.max(0, 1 - y * y));
+    var theta = i * GA;
+    var x = Math.cos(theta) * rad;
+    var z = Math.sin(theta) * rad;
+    vectors.push({
+      x: x, y: y, z: z,
+      lat: Math.asin(y) * 180 / Math.PI,
+      lon: Math.atan2(x, z) * 180 / Math.PI
+    });
+  }
+
+  var cards = [];
+  var gridFigs = [];
+  var decodedSrc = SHOTS.map(function (s) { return CDN + s.id; });
+
+  SHOTS.forEach(function (s, idx) {
+    var card = document.createElement('div');
+    card.className = 'card' + (s.tall ? ' tall' : '');
+    card.setAttribute('data-idx', idx);
+    var fig = document.createElement('figure');
+    var img = document.createElement('img');
+    img.alt = s.title;
+    img.decoding = 'async';
+    fig.appendChild(img);
+    card.appendChild(fig);
+    orb.appendChild(card);
+    cards.push({ el: card, fig: fig, img: img, vec: vectors[idx], lastD: -1, lastO: -1 });
+
+    var gf = document.createElement('figure');
+    gf.setAttribute('data-idx', idx);
+    var gimg = document.createElement('img');
+    gimg.alt = s.title;
+    gimg.loading = 'lazy';
+    gimg.decoding = 'async';
+    var cap = document.createElement('figcaption');
+    cap.textContent = s.title;
+    gf.appendChild(gimg);
+    gf.appendChild(cap);
+    gridRows.appendChild(gf);
+    gridFigs.push({ el: gf, img: gimg });
+    gf.addEventListener('click', function () { openShot(idx, gf); });
+  });
+
+  /* ================= layout ================= */
+  var R = 300, PERS = 1150;
+  var lastW = window.innerWidth, lastH = window.innerHeight;
+
+  function breakpoints() {
+    var w = window.innerWidth;
+    if (w <= 380) return { hr: .38, wr: .48, floor: 108, scale: .44, persp: 620, decode: 420 };
+    if (w <= 640) return { hr: .42, wr: .52, floor: 120, scale: .46, persp: 760, decode: 520 };
+    if (w <= 900) return { hr: .46, wr: .58, floor: 155, scale: .47, persp: 920, decode: 640 };
+    return { hr: .46, wr: .58, floor: 155, scale: .47, persp: 1150, decode: 760 };
+  }
+
+  function layoutSphere() {
+    var w = window.innerWidth, h = window.innerHeight;
+    var bp = breakpoints();
+    R = Math.max(bp.floor, Math.min(480, h * bp.hr, w * bp.wr));
+    PERS = bp.persp;
+    root.style.setProperty('--persp', PERS + 'px');
+    var cw = Math.round(Math.max(72, R * bp.scale));
+    root.style.setProperty('--cw', cw + 'px');
+    cards.forEach(function (c) {
+      var v = c.vec;
+      c.el.style.transform =
+        'translate3d(' + (v.x * R).toFixed(2) + 'px,' + (-v.y * R).toFixed(2) + 'px,' + (v.z * R).toFixed(2) + 'px)' +
+        ' rotateY(' + v.lon.toFixed(3) + 'deg) rotateX(' + v.lat.toFixed(3) + 'deg)';
+    });
+  }
+
+  function onResize(force) {
+    var w = window.innerWidth, h = window.innerHeight;
+    if (!force && Math.abs(w - lastW) < 20 && Math.abs(h - lastH) < 20) return;
+    lastW = w; lastH = h;
+    layoutSphere();
+  }
+  window.addEventListener('resize', function () { onResize(false); });
+  window.addEventListener('orientationchange', function () { setTimeout(function () { onResize(true); }, 220); });
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', function () { onResize(true); });
+    window.visualViewport.addEventListener('scroll', function () { onResize(true); });
+  }
+
+  /* ================= camera loop ================= */
+  var spin = 0, tilt = -4, camZ = 0;
+  var dragX = 0, dragY = 0, velX = 0, velY = 0;
+  var PITCH_LIMIT = 32;
+  var focused = -1;
+  var isLit = false;
+  var lastDeep = false;
+
+  function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+
+  function frame() {
+    requestAnimationFrame(frame);
+    var p = clamp(window.scrollY / (window.innerHeight * 0.16), 0, 1);
+
+    if (!dragging && !isLit) {
+      dragX += velX; dragY += velY;
+      velX *= 0.94; velY *= 0.94;
+      if (Math.abs(velX) < 0.002) velX = 0;
+      if (Math.abs(velY) < 0.002) velY = 0;
+    }
+    var minDY = -PITCH_LIMIT - tilt, maxDY = PITCH_LIMIT - tilt;
+    dragY = clamp(dragY, minDY, maxDY);
+
+    var camZTarget = p * Math.min(64, R * 0.12);
+    camZ += (camZTarget - camZ) * 0.075;
+
+    var sx = tilt + dragY;
+    var sy = spin + dragX;
+
+    world.style.transform = 'translateZ(' + camZ.toFixed(2) + 'px) rotateY(' + sy.toFixed(3) + 'deg) rotateX(' + sx.toFixed(3) + 'deg)';
+    headline.style.transform = 'rotateX(' + (-sx).toFixed(3) + 'deg) rotateY(' + (-sy).toFixed(3) + 'deg) translateZ(' + (R * 0.62).toFixed(2) + 'px)';
+    headline.style.opacity = String(Math.max(0, 1 - p * 0.55));
+
+    var deep = p > 0.55;
+    if (deep !== lastDeep) { lastDeep = deep; body.classList.toggle('deep', deep); }
+
+    var ax = sx * Math.PI / 180, ay = sy * Math.PI / 180;
+    var cosX = Math.cos(ax), sinX = Math.sin(ax), cosY = Math.cos(ay), sinY = Math.sin(ay);
+    var shade = 1 - Math.min(1, p * 1.6);
+    var near = PERS * 0.66;
+
+    for (var i = 0; i < cards.length; i++) {
+      var c = cards[i], v = c.vec;
+      var vx = v.x, vy = -v.y, vz = v.z;
+      var vy2 = vy * cosX - vz * sinX;
+      var vz2 = vy * sinX + vz * cosX;
+      var zf = -vx * sinY + vz2 * cosY;
+      var base = 0.14 + 0.86 * Math.pow((zf + 1) / 2, 0.85);
+      var dim = shade * (1 - base);
+      if (isLit) dim = Math.min(1, dim + 0.78);
+      var absZ = zf * R + camZ;
+      var fade = 1;
+      if (absZ > near) fade = Math.max(0, 1 - (absZ - near) / 190);
+      if (isLit && focused === i) fade = 0;
+      if (Math.abs(dim - c.lastD) > 0.004) { c.lastD = dim; c.fig.style.setProperty('--d', dim.toFixed(3)); }
+      if (Math.abs(fade - c.lastO) > 0.004) { c.lastO = fade; c.el.style.opacity = fade.toFixed(3); }
+    }
+  }
+  layoutSphere();
+  frame(); /* one synchronous first frame, then the rAF loop carries on */
+
+  /* ================= drag ================= */
+  var dragging = false;
+  var dragActive = false;
+  var startX = 0, startY = 0, lastPX = 0, lastPY = 0, movedTotal = 0;
+  var downCard = null, downMode = null, touchDecided = false, pointerId = null;
+
+  stage.addEventListener('pointerdown', function (e) {
+    if (isLit) return;
+    downCard = e.target.closest ? e.target.closest('.card') : null;
+    dragging = true; dragActive = false; touchDecided = false;
+    startX = lastPX = e.clientX; startY = lastPY = e.clientY;
+    movedTotal = 0; pointerId = e.pointerId;
+    downMode = e.pointerType;
+    if (e.pointerType === 'mouse' || e.pointerType === 'pen') {
+      dragActive = true;
+      try { stage.setPointerCapture(e.pointerId); } catch (err) {}
+    }
+  });
+
+  stage.addEventListener('pointermove', function (e) {
+    if (!dragging || e.pointerId !== pointerId) return;
+    var dx = e.clientX - lastPX, dy = e.clientY - lastPY;
+    var totalDx = e.clientX - startX, totalDy = e.clientY - startY;
+    movedTotal = Math.max(movedTotal, Math.hypot(totalDx, totalDy));
+    if (downMode === 'touch' && !touchDecided) {
+      if (Math.hypot(totalDx, totalDy) < 10) return;
+      touchDecided = true;
+      if (Math.abs(totalDy) > Math.abs(totalDx) * 1.15) {
+        dragging = false; /* vertical swipe: let the page scroll */
+        return;
+      }
+      dragActive = true;
+      try { stage.setPointerCapture(e.pointerId); } catch (err) {}
+      lastPX = e.clientX; lastPY = e.clientY;
+      return;
+    }
+    if (!dragActive) return;
+    lastPX = e.clientX; lastPY = e.clientY;
+    dragX += dx * 0.13;
+    dragY += dy * 0.13;
+    velX = dx * 0.13; velY = dy * 0.13;
+    if (e.cancelable) e.preventDefault();
+  });
+
+  function endDrag(e) {
+    if (!dragging) return;
+    var wasDrag = dragActive;
+    dragging = false; dragActive = false;
+    var coarse = window.matchMedia && window.matchMedia('(pointer:coarse)').matches;
+    var slop = coarse ? 14 : 6;
+    if (wasDrag !== undefined && downCard && movedTotal <= slop) {
+      var idx = parseInt(downCard.getAttribute('data-idx'), 10);
+      if (!isNaN(idx)) openShot(idx, downCard);
+    }
+    downCard = null;
+  }
+  stage.addEventListener('pointerup', endDrag);
+  stage.addEventListener('pointercancel', function () { dragging = false; dragActive = false; downCard = null; });
+
+  window.addEventListener('scroll', function () {
+    var max = window.innerHeight * 0.16;
+    if (window.scrollY > max) window.scrollTo(0, max);
+  }, { passive: true });
+
+  /* ================= image decode / preloading ================= */
+  var TOTAL = SHOTS.length + 1;
+  var loadedCount = 0;
+  var birth = Date.now();
+
+  function reportLoaded() {
+    loadedCount++;
+    barEl.style.transform = 'scaleX(' + Math.min(1, loadedCount / TOTAL).toFixed(3) + ')';
+  }
+
+  function downscale(img, maxW) {
+    return new Promise(function (resolve) {
+      try {
+        var nw = img.naturalWidth, nh = img.naturalHeight;
+        if (!nw || nw <= maxW) return resolve(null);
+        var scale = maxW / nw;
+        var canvas = document.createElement('canvas');
+        canvas.width = Math.round(nw * scale);
+        canvas.height = Math.round(nh * scale);
+        var cx = canvas.getContext('2d');
+        cx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        if (canvas.toBlob) {
+          canvas.toBlob(function (blob) {
+            resolve(blob ? URL.createObjectURL(blob) : null);
+          }, 'image/webp', 0.88);
+        } else resolve(null);
+      } catch (err) { resolve(null); }
+    });
+  }
+
+  function probeShot(idx) {
+    return new Promise(function (resolve) {
+      var s = SHOTS[idx];
+      var probe = new Image();
+      probe.crossOrigin = 'anonymous';
+      var done = false;
+      function finish(src) {
+        if (done) return; done = true;
+        if (src) {
+          decodedSrc[idx] = src;
+          cards[idx].img.src = src;
+          gridFigs[idx].img.src = src;
+        } else {
+          cards[idx].img.src = decodedSrc[idx];
+          gridFigs[idx].img.src = decodedSrc[idx];
+        }
+        cards[idx].img.classList.add('in');
+        reportLoaded();
+        resolve();
+      }
+      probe.onload = function () {
+        var decodeIt = (probe.decode ? probe.decode().catch(function () {}) : Promise.resolve());
+        Promise.resolve(decodeIt).then(function () {
+          downscale(probe, breakpoints().decode).then(finish);
+        });
+      };
+      probe.onerror = function () { finish(null); };
+      probe.src = CDN + s.id;
+    });
+  }
+
+  /* avatar (downscaled to 160) — not part of the splash count */
+  (function loadAvatar() {
+    var probe = new Image();
+    probe.crossOrigin = 'anonymous';
+    probe.onload = function () {
+      downscale(probe, 160).then(function (src) { if (src) avatarImg.src = src; });
+    };
+    probe.src = CDN + AVATAR_ID;
+  })();
+
+  /* film counts as one asset once it can play (or fails) */
+  var filmReported = new Promise(function (resolve) {
+    var done = false;
+    function fin() { if (!done) { done = true; reportLoaded(); resolve(); } }
+    film.addEventListener('canplay', fin);
+    film.addEventListener('loadeddata', fin);
+    film.addEventListener('error', fin, true);
+    setTimeout(fin, 6000);
+  });
+
+  /* ================= splash ================= */
+  var allAssets = Promise.all(SHOTS.map(function (_, i) { return probeShot(i); }).concat([filmReported]));
+
+  function wait(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
+
+  var splashDone = Promise.race([
+    Promise.all([allAssets, wait(Math.max(0, 1150 - (Date.now() - birth)))]),
+    wait(9000)
+  ]).then(function () {
+    barEl.style.transform = 'scaleX(1)';
+    return wait(180);
+  });
+
+  /* ================= intro film ================= */
+  var revealed = false;
+  var revealTimer = null;
+  var backstopTimer = null;
+
+  try { film.pause(); } catch (err) {}
+  try {
+    film.muted = true;
+    film.defaultMuted = true;
+    film.playsInline = true;
+    film.setAttribute('playsinline', '');
+    film.setAttribute('webkit-playsinline', '');
+  } catch (err) {}
+
+  function scheduleFromPlaying() {
+    if (revealTimer) clearTimeout(revealTimer);
+    var d = film.duration;
+    if (d && isFinite(d)) {
+      var remain = (d - film.currentTime - 0.45) / 2;
+      revealTimer = setTimeout(reveal, Math.max(300, remain * 1000));
+    }
+  }
+
+  film.addEventListener('play', function () {
+    try { film.playbackRate = 2; } catch (err) {}
+  });
+  film.addEventListener('playing', function () {
+    try { film.playbackRate = 2; } catch (err) {}
+    scheduleFromPlaying();
+  });
+  film.addEventListener('ended', function () { reveal(); });
+  film.addEventListener('error', function () {
+    intro.classList.add('novideo');
+    setTimeout(reveal, 1300);
+  }, true);
+
+  function tryPlay() {
+    try {
+      if (film.currentTime > 0.05) film.currentTime = 0;
+    } catch (err) {}
+    try { film.playbackRate = 2; } catch (err) {}
+    var p = null;
+    try { p = film.play(); } catch (err) {}
+    if (p && typeof p.catch === 'function') {
+      p.catch(function () {
+        /* autoplay blocked: first frame stays as a poster, first gesture retries */
+        var retry = function () {
+          var p2 = null;
+          try { p2 = film.play(); } catch (err) {}
+          if (p2 && typeof p2.catch === 'function') p2.catch(function () {});
+        };
+        window.addEventListener('pointerdown', retry, { once: true });
+        window.addEventListener('keydown', retry, { once: true });
+        window.addEventListener('touchstart', retry, { once: true, passive: true });
+        setTimeout(function () { if (film.paused) reveal(); }, 2600);
+      });
+    }
+  }
+
+  function startFilm() {
+    backstopTimer = setTimeout(reveal, 14000);
+    tryPlay();
+  }
+
+  skipBtn.addEventListener('click', function () { reveal(); });
+
+  function reveal() {
+    if (revealed) return;
+    revealed = true;
+    if (revealTimer) clearTimeout(revealTimer);
+    if (backstopTimer) clearTimeout(backstopTimer);
+    intro.classList.add('closing');
+    body.classList.remove('locked');
+    root.style.overflow = '';
+    /* measure/layout the sphere twice inside the black veil */
+    layoutSphere();
+    requestAnimationFrame(function () { layoutSphere(); });
+    setTimeout(function () {
+      layoutSphere();
+      body.classList.add('revealed');
+      intro.classList.add('gone');
+      setTimeout(function () { if (intro.parentNode) intro.remove(); }, 700);
+    }, 1000);
+  }
+
+  splashDone.then(function () {
+    splash.classList.add('out');
+    setTimeout(function () { if (splash.parentNode) splash.remove(); }, 950);
+    startFilm();
+  });
+
+  /* ================= grid ================= */
+  function setGrid(on) {
+    body.classList.toggle('gridview', on);
+    if (on) gridEl.scrollTop = 0;
+  }
+  gridBtn.addEventListener('click', function () { setGrid(!body.classList.contains('gridview')); });
+
+  /* ================= menu ================= */
+  var menuOpen = false;
+  function setMenu(on) {
+    menuOpen = on;
+    menuEl.classList.toggle('open', on);
+    menuEl.setAttribute('aria-hidden', on ? 'false' : 'true');
+    body.classList.toggle('menuopen', on);
+    menuBtn.setAttribute('aria-expanded', on ? 'true' : 'false');
+    menuBtn.setAttribute('aria-label', on ? 'Close menu' : 'Open menu');
+  }
+  menuBtn.addEventListener('click', function () { setMenu(!menuOpen); });
+  menuEl.querySelectorAll('nav a').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      e.preventDefault();
+      var opensGrid = a.hasAttribute('data-grid');
+      setMenu(false);
+      if (opensGrid) setGrid(true);
+    });
+  });
+  document.querySelector('.wordmark').addEventListener('click', function (e) { e.preventDefault(); });
+
+  /* ================= lightbox ================= */
+  var openToken = 0;
+  var litSource = null;
+
+  function openShot(idx, sourceEl) {
+    if (body.classList.contains('gridview')) litSource = sourceEl;
+    else litSource = sourceEl;
+    focused = idx;
+    isLit = true;
+    var s = SHOTS[idx];
+    litTitle.textContent = s.title;
+    litWhere.textContent = s.place;
+    litNote.textContent = s.note;
+    litImg.alt = s.title;
+    litImg.src = decodedSrc[idx]; /* already-decoded card image, immediately */
+    body.classList.add('lit');
+    lit.setAttribute('aria-hidden', 'false');
+    body.style.overflow = 'hidden';
+
+    var token = ++openToken;
+    var full = new Image();
+    full.onload = function () {
+      if (token === openToken && focused === idx) litImg.src = full.src;
+    };
+    full.src = CDN + s.id;
+
+    /* FLIP from the clicked card/figure to center */
+    if (sourceEl) {
+      var srcRect = sourceEl.getBoundingClientRect();
+      var plateRect = plate.getBoundingClientRect();
+      if (plateRect.width > 0 && srcRect.width > 0) {
+        var dx = (srcRect.left + srcRect.width / 2) - (plateRect.left + plateRect.width / 2);
+        var dy = (srcRect.top + srcRect.height / 2) - (plateRect.top + plateRect.height / 2);
+        var sc = Math.max(0.04, srcRect.width / plateRect.width);
+        plate.style.transition = 'none';
+        plate.style.transform = 'translate(' + dx + 'px,' + dy + 'px) scale(' + sc + ')';
+        plate.style.opacity = '0';
+        void plate.offsetWidth;
+        plate.style.transition = '';
+        plate.style.transform = '';
+        plate.style.opacity = '';
+      }
+    }
+  }
+
+  function closeShot() {
+    if (!isLit) return;
+    focused = -1; /* card lights back up immediately */
+    isLit = false;
+    openToken++;
+    body.classList.remove('lit');
+    lit.setAttribute('aria-hidden', 'true');
+    body.style.overflow = '';
+    var sourceEl = litSource;
+    litSource = null;
+    if (sourceEl) {
+      var srcRect = sourceEl.getBoundingClientRect();
+      var plateRect = plate.getBoundingClientRect();
+      if (plateRect.width > 0 && srcRect.width > 0) {
+        var dx = (srcRect.left + srcRect.width / 2) - (plateRect.left + plateRect.width / 2);
+        var dy = (srcRect.top + srcRect.height / 2) - (plateRect.top + plateRect.height / 2);
+        var sc = Math.max(0.04, srcRect.width / plateRect.width);
+        plate.style.transform = 'translate(' + dx + 'px,' + dy + 'px) scale(' + sc + ')';
+        plate.style.opacity = '0';
+        setTimeout(function () {
+          plate.style.transition = 'none';
+          plate.style.transform = '';
+          plate.style.opacity = '';
+          requestAnimationFrame(function () { plate.style.transition = ''; });
+        }, 640);
+      }
+    }
+  }
+
+  lit.querySelectorAll('[data-close]').forEach(function (el) {
+    el.addEventListener('click', function () { closeShot(); });
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    if (isLit) closeShot();
+    else if (menuOpen) setMenu(false);
+    else if (body.classList.contains('gridview')) setGrid(false);
+  });
+
+  /* ================= custom cursor ================= */
+  var fine = window.matchMedia && window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+  if (fine && dot) {
+    var mx = -100, my = -100, dX = -100, dY = -100;
+    window.addEventListener('pointermove', function (e) {
+      mx = e.clientX; my = e.clientY;
+      var t = e.target;
+      var hot = t && t.closest && t.closest('.card, a, button, #grid figure');
+      dot.classList.toggle('wide', !!hot);
+    }, { passive: true });
+    (function cursorLoop() {
+      requestAnimationFrame(cursorLoop);
+      dX += (mx - dX) * 0.2;
+      dY += (my - dY) * 0.2;
+      dot.style.transform = 'translate3d(' + dX + 'px,' + dY + 'px,0)';
+    })();
+  }
+})();
+</script>
+</body>
+</html>
