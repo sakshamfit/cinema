@@ -1,6 +1,6 @@
 # Cinema — Concept Studio
 
-The project now brings together the six interactive landing-page studies from [`gireeshkumarreddy/landing-concepts`](https://github.com/gireeshkumarreddy/landing-concepts) and the original Ethan Vale wildlife experience. The concept hub is the default page; the existing Cinema page is preserved as `public/cinema.html` and linked from the hub header.
+A curated collection of six interactive landing-page concepts and the original Ethan Vale wildlife archive. The concept hub is the default page; the existing Cinema page is preserved as `public/cinema.html` and linked from the hub header.
 
 ## Run locally
 
